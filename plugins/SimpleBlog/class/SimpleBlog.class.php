@@ -14,7 +14,7 @@ if ( defined('IN_GS') === false ) { die( 'You cannot load this file directly!' )
 class SimpleBlog
 {
     /** var $default_settings */
-    public var $default_settings = array();
+    public $default_settings = array();
 
     /**
      * Class Constructor

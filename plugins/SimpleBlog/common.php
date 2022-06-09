@@ -21,6 +21,9 @@ if ( defined('IN_GS') === false ) { die( 'You cannot load this file directly!' )
  */
 function SimpleBlog_init(): void
 {
+    # We need some globals
+    GLOBAL $TEMPLATE, $SITEURL;
+
     # Define some required constants
     define( 'SBLOGVERS', '4.0.0-alpha' );
     define( 'SBLOGDATA', GSDATAPATH . 'blog' . DIRECTORY_SEPARATOR );
@@ -214,23 +217,23 @@ function SimpleBlog_pageContentFilter( string $content = '', bool $forced = fals
 
         switch( true )
         {
-            case ( isset($_GET['post'] ):
+            case ( isset($_GET['post']) ):
                 show_blog_post( $SimpleBlog->getPost($_GET['post']) );
                 break;
 
-            case ( isset($_GET['category'] ):
+            case ( isset($_GET['category']) ):
                 show_blog_category( $SimpleBlog->getCategory($_GET['category']) );
                 break;
 
-            case ( isset($_GET['archive'] ):
+            case ( isset($_GET['archive']) ):
                 show_blog_archive( $SimpleBlog->getArchive($_GET['archive']) );
                 break;
 
-            case ( isset($_GET['tag'] ):
+            case ( isset($_GET['tag']) ):
                 show_blog_tag( $SimpleBlog->getTag($_GET['tag']) );
                 break;
 
-            case ( isset($_GET['search'] ):
+            case ( isset($_GET['search']) ):
                 $filter = isset($_GET['filter']) ? array($_GET['filter']) : array('all');
                 show_blog_search_results( $SimpleBlog->searchPosts($_GET['search'], $filter) );
                 break;

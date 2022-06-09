@@ -35,7 +35,7 @@ function show_blog_posts( array $posts ): void {}
 
 function show_blog_categories( bool $echo = true, bool|null $show_count = null ): void {}
 
-function show_blog_archives( string $basis = 'monthly', bool $echo = true, bool|null $show_count ): void {}
+function show_blog_archives( string $basis = 'monthly', bool $echo = true, bool|null $show_count = null ): void {}
 
 function show_blog_tags( bool $echo = true, bool|null $show_count = null ): void {}
 
