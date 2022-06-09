@@ -18,8 +18,9 @@ define( 'SBLOGPATH', GSPLUGINPATH . DIRECTORY_SEPARATOR . SBLOG . DIRECTORY_SEPA
 # Setup languages and language settings
 i18n_merge( SBLOG ) || i18n_merge( SBLOG, "en_US" );
 
-# Require the common file
+# Require the common file and initialize the plugin
 require_once( SBLOGPATH . 'common.php' );
+SimpleBlog_init();
 
 # Register this plugin with the system
 register_plugin(
