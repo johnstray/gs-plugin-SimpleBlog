@@ -1,0 +1,66 @@
+/**
+ * SimpleBlog Plugin for GetSimple CMS
+ * A simple and easy to use blog/newsfeed system designed for GetSimple CMS
+ *
+ * @package: gs-SimpleBlog
+ * @version: 4.0.0-alpha
+ * @author: John Stray <getsimple@johnstray.com>
+ */
+
+.gs_simbleblog_ui_form .leftsec,
+.gs_simbleblog_ui_form .rightsec {
+    padding: 10px 10px 10px 10px;
+}
+
+.gs_simbleblog_ui_form h3 {
+    margin: 20px 0 8px;
+    line-height: 20px;
+    font-size: 18px;
+    font-style: italic;
+    color: cadetblue;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+
+.gs_simbleblog_ui_form input,
+.gs_simbleblog_ui_form select,
+.gs_simbleblog_ui_form textarea,
+.gs_simbleblog_ui_form .radio {
+    margin-top: 8px;
+}
+
+.gs_simbleblog_ui_form textarea + label {
+    display: inline-block;
+    padding-top: 8px;
+    padding-left: 40px;
+}
+
+.gs_simbleblog_ui_form .radio {
+    width: 49%;
+    display: inline-block;
+}
+.gs_simbleblog_ui_form .radio input[type=radio] {
+    margin-top: 0;
+}
+
+.gs_simpleblog_ui_hline {
+    border: none;
+    border-top: 1px solid #e3e3e3;
+    margin: 0 0 20px;
+}
+
+/* Copyright Text Section */
+.gs_simpleblog_ui_copyright-text {
+  text-shadow: 1px 1px 0 rgba(255,255,255,.4);
+  margin: -30px 250px 0 0;
+  padding: 10px 0 0;
+  font-size: 11px;
+  color: #999;
+  text-align: center;
+}
+.gs_simpleblog_ui_copyright-text div {
+  font-size:10px;
+}
+.gs_simpleblog_ui_copyright-text a {
+  color:#888 !important;
+  text-decoration:none !important;
+}
