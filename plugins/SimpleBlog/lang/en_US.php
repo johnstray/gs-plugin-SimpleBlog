@@ -87,6 +87,46 @@ $i18n = array(
     'UI_SEO_SEARCH_HINT' => "{keyphrase} = The search term, {filter} = The filter used",
     'UI_SEO_SHOW_ON_PAGE' => "Show on page?",
 
+
+    # -----
+    # Post Management UI
+    # -----
+
+    'UI_MANAGE_PAGE_TITLE' => "Manage Blog Posts",
+    'UI_MANAGE_PAGE_INTRO' => "",
+    'UI_NEW_POST_BUTTON' => "New Post",
+    'UI_NEW_POST_BUTTON_HINT' => "Create a new post on the blog",
+
+
+    # -----
+    # Category Management UI
+    # -----
+
+    'UI_CATEGORIES_PAGE_TITLE' => "Manage Blog Categories",
+    'UI_CATEGORIES_PAGE_INTRO' => "",
+    'UI_NEW_CATEGORY_BUTTON' => "New Category",
+    'UI_NEW_CATEGORY_BUTTON_HINT' => "Create a new category for the blog",
+
+    # -----
+    # Layouts Management UI
+    # -----
+
+    'UI_LAYOUTS_PAGE_TITLE' => "Manage Blog Layout Templates",
+    'UI_LAYOUTS_PAGE_INTRO' => "",
+
+
+    # -----
+    # Help Resources UI
+    # -----
+
+    'UI_HELP_PAGE_TITLE' => "SimpleBlog Help Resources",
+    'UI_HELP_PAGE_INTRO' => "",
+
+
+    # -----
+    # General Strings
+    # -----
+
     'RSS_FEED' => "RSS Feed",
     'DEFAULT' => "Default:",
     'CANCEL_CHANGES' => "Cancel Changes",
