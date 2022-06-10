@@ -40,7 +40,7 @@ class SimpleBlog
      * @since 1.0
      * @return array An array containg all settings as key=>value pairs
      */
-    public function getAllSettings() : array
+    public function getAllSettings(): array
     {
         // Gets the array of settings
     }
@@ -53,7 +53,7 @@ class SimpleBlog
      * @param string $setting The setting key for the value required
      * @return string The value of the requested configuration setting
      */
-    public function getSetting( string $setting ) : string
+    public function getSetting( string $setting ): string
     {
         // Gets the value of a specific setting
     }
@@ -68,7 +68,7 @@ class SimpleBlog
      * @param array $settings - An array of settings, can be incomplete, will be filled by finction
      * @return bool True is saved successfully, False otherwise
      */
-    public function saveSettings( array $settings ) : bool
+    public function saveSettings( array $settings ): bool
     {
         // Saves the settings to file
     }
@@ -81,14 +81,29 @@ class SimpleBlog
     /**
      * Get all posts
      * Returns an associative array of posts with data, will have either an excerpt or the full content depending on
-     * the configured setting for this.
+     * the configured setting for this. @NOTE: Maybe return both full and excerpt?
      *
      * @since 1.0
      * @return array An associative array of posts
      */
-    public function getAllPosts() : array
+    public function getAllPosts(): array
     {
         // Returns an associative array of posts
+    }
+
+    /**
+     * Get recent posts
+     * Returns and associative array of the most recent posts with data. $limit determines how many posts to get, and
+     * setting this to -1 will use the configured setting
+     *
+     * @since 1.0
+     * @param int $limit How many recent posts to return, -1 uses configured setting
+     * @return array An associative array of posts with data
+     */
+    public function getRecentPosts( int $limit = -1 ): array
+    {
+        // Returns an associative array of most recent posts, length limited by $limit
+        // $limit = -1 will use configured setting
     }
 
     /**
@@ -99,7 +114,7 @@ class SimpleBlog
      * @param string $slug The slug for the post to get data for
      * @return array An array of data for the requested post
      */
-    public function getPost( string $slug ) : array
+    public function getPost( string $slug ): array
     {
         // Returns an array containing all data for the given post
     }
@@ -118,7 +133,7 @@ class SimpleBlog
      * @param bool $force_new Forces saving a new post instead of updating an existing one
      * @return string The post slug that was actually saved, empty on failure
      */
-    public function savePost( array $post, bool $force_new = false ) : string
+    public function savePost( array $post, bool $force_new = false ): string
     {
         // Saves a post to file
     }
@@ -131,7 +146,7 @@ class SimpleBlog
      * @param string $slug The slug of the post to delete
      * @return bool True on success or False otherwise
      */
-    public function deletePost( string $slug ) : bool
+    public function deletePost( string $slug ): bool
     {
         // Deletes a post
     }
@@ -148,7 +163,7 @@ class SimpleBlog
      * @since 1.0
      * @return array An associative array of categories with data
      */
-    public function getAllCategories() : array
+    public function getAllCategories(): array
     {
         // Returns an associative array of categories, eg.:
         //  $categories = array(
@@ -169,7 +184,7 @@ class SimpleBlog
      * @param string $slug The slug for the category required
      * @return array An array of data for the category, including a subarray of associated posts
      */
-    public function getCategory( string $slug ) : array
+    public function getCategory( string $slug ): array
     {
         // Returns an array with category details and its posts, eg.:
         //  $category = array(
@@ -199,7 +214,7 @@ class SimpleBlog
      * @param bool $force_new Forces creating a new category instead of updating
      * @return bool True on success or False otherwise
      */
-    public function saveCategory( array $category ) : bool
+    public function saveCategory( array $category ): bool
     {
         // Saves a category to the categories file
         // Updates details if category already exists
@@ -213,7 +228,7 @@ class SimpleBlog
      * @param string $slug The $slug of the Category to remove
      * @return bool True on success or False otherwise
      */
-    public function deleteCategory( string $slug ) : bool
+    public function deleteCategory( string $slug ): bool
     {
         // Deletes a category from the categories file
         // Removes the category from all posts that are attached
@@ -234,7 +249,7 @@ class SimpleBlog
      *                      Defualts to 'monthly' for the basis
      * @return array An associative array of categories with data
      */
-    public function getAllArchives( string $basis = 'monthly' ) : array
+    public function getAllArchives( string $basis = 'monthly' ): array
     {
         // Returns an associative array of archives, eg.:
         //  $archives = array(
@@ -259,7 +274,7 @@ class SimpleBlog
      * @param string $slug The slug of the archive to return
      * @return array An array of data for the archive, including any posts for the archive
      */
-    public function getArchive( string $slug ) : array
+    public function getArchive( string $slug ): array
     {
         // Returns an array containg details about the archive and its posts
         // Archive basis is determined from the $slug <- Refer $this->getAllArchives()
@@ -290,7 +305,7 @@ class SimpleBlog
      * @since 1.0
      * @return array An associative array of tags with data
      */
-    public function getAllTags() : array
+    public function getAllTags(): array
     {
         // Returns an associative array of tags, eg.:
         //  $tags = array(
@@ -310,7 +325,7 @@ class SimpleBlog
      * @param string $slug The slug of the tag to return
      * @return array An array of data for the tag, including any posts for the tag
      */
-    public function getTag( string $slug ) : array
+    public function getTag( string $slug ): array
     {
         // Returns an array containg details about the tag and its posts
         //  $archive = (
@@ -338,7 +353,7 @@ class SimpleBlog
      * @param string $string The string to convert into a slug
      * @return string A transliterated and URL safe slug
      */
-    private function generateSlug( string $string ) : string
+    private function generateSlug( string $string ): string
     {
         // Generates a slug based on the given title
     }
@@ -353,7 +368,7 @@ class SimpleBlog
      * @param int $length The length of the excerpt, -1 will result in using the configured setting
      * @return string The generated excerpt of the content
      */
-    public function generateExcerpt( string $content, int $length = -1 ) : string
+    public function generateExcerpt( string $content, int $length = -1 ): string
     {
         // Generates an except from the given content, removing all markup.
         // Refer: inc/template_functions.php getExcerpt()
@@ -382,7 +397,7 @@ class SimpleBlog
      * @param array $filter An array of filters to use, a filter can be any key within a post, such as 'title' or 'all'
      * @return array An array of post slugs matching the keyphrase and filters
      */
-    public function searchPosts( string $keyphrase, $filter = ['content','title'] ) : array
+    public function searchPosts( string $keyphrase, $filter = ['content','title'] ): array
     {
         // Filter through the posts looking for the keyphrase in the given filter(s)
     }
@@ -401,7 +416,7 @@ class SimpleBlog
      * @param string $content A string of content to store in the cache
      * @return bool True if storred successfully, False otherwise
      */
-    private function cachePut( string $cache_id, string $content ) : bool
+    private function cachePut( string $cache_id, string $content ): bool
     {
         // Saves something to the cache.
     }
@@ -414,7 +429,7 @@ class SimpleBlog
      * @param string $cache_id The identifier for the item to get from the cache
      * @return string The string content of the item returned from the cache
      */
-    private function cacheGet( string $cache_id ) : string
+    private function cacheGet( string $cache_id ): string
     {
         // Gets something from the cache
     }
@@ -427,7 +442,7 @@ class SimpleBlog
      * @since 1.0
      * @return bool Returns True if successful, False otherwise
      */
-    public function rebuildCache() : bool
+    public function rebuildCache(): bool
     {
         // Removes all cache content and rebuilds it by looping over post data
         // Will also recheck posts against categories.xml file
