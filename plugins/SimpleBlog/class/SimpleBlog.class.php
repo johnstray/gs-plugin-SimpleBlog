@@ -44,8 +44,8 @@ class SimpleBlog
 
     /** @var array $data_files Array of paths to required files. */
     public $data_files = array(
-        'settings' => $this->data_paths['basedata'] . 'settings.xml',
-        'categories' => $this->data_paths['basedata'] . 'categories.xml'
+        'settings' => GSDATAPATH . 'blog' . DIRECTORY_SEPARATOR . 'settings.xml',
+        'categories' => GSDATAPATH . 'blog' . DIRECTORY_SEPARATOR . 'categories.xml'
     );
 
     /**
