@@ -133,4 +133,15 @@ $i18n = array(
     'RESET_TO_DEFAULT' => "Reset to Default",
     'SETTINGS_LAST_SAVED_BY' => "Settings last saved by",
 
+    # -----
+    # SimpleBlog Class
+    # -----
+
+    'DIRECTORY_NOT_WRITABLE' => "Required directory is not writeable: ",
+    'CANT_CREATE_DIRECTORY' => "Could not create required directory: ",
+    'CREATE_SETTINGS_FAILED' => "Could not create the settings file!",
+    'SETTINGS_UPDATE_OK' => "Successfully updated the settings file",
+    'SETTINGS_UPDATE_FAILED' => "Failed to update the settings file",
+    'CREATE_CATEGORIES_FAILED' => "Could not create the categories file!",
+
 );

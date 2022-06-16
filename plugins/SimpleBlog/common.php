@@ -270,3 +270,22 @@ function SimpleBlog_displayMessage( string $message, string $type = 'info', bool
         echo "<script>notify".$type."('".$message."')".$removeit.";</script>";
     }
 }
+
+/**
+ * Debug Logging
+ * Output debugging information to GetSimple's debug log when debugging enabled
+ *
+ * @since 1.0
+ * @param string $message The text of the message to add to the log
+ * @param string $type The type of message this is, could be 'ERROR', 'WARN', etc.
+ * @return string The formatted message added to the debug log
+ */
+function SimpleBlog_debugLog( string $message, string $type = 'INFO' ): string
+{
+    if ( defined('GSDEBUG') && getDef('GSDEBUG', true) === true )
+    {
+        $debugMessage = "SimpleBlog Plugin [" . $type . "]: " . $message;
+        debugLog( $debugMessage );
+    }
+    return $debugMessage || '';
+}

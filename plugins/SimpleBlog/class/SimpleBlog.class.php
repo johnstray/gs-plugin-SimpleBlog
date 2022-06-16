@@ -13,8 +13,40 @@ if ( defined('IN_GS') === false ) { die( 'You cannot load this file directly!' )
 
 class SimpleBlog
 {
-    /** var $default_settings */
-    public $default_settings = array();
+    /** @var array $default_settings Default configuration settting for the Blog. */
+    private $default_settings = array(
+        'blogurl'               => 'index',
+        'prettyurls'            => 'no',
+        'postsperpage'          => '10',
+        'recentposts'           => '5',
+        'postformat'            => 'excerpt',
+        'excerptlength'         => '350',
+        'postcounts'            => 'yes',
+        'uploaderpath'          => 'blog/',
+        'rsstitle'              => '',
+        'rssdescription'        => '',
+        'categoriesdesc'        => '',
+        'categoriesdescshow'    => 'yes',
+        'archivesdesc'          => '',
+        'archivesdescshow'      => 'yes',
+        'tagsdesc'              => '',
+        'tagsdescshow'          => 'yes',
+        'searchdesc'            => '',
+        'searchdescshow'        => 'yes'
+    );
+
+    /** @var array $data_paths Array of paths to required directories. */
+    public $data_paths = array(
+        'basedata' => GSDATAPATH . 'blog' . DIRECTORY_SEPARATOR,
+        'posts' => SBLOGDATA . 'posts' . DIRECTORY_SEPARATOR,
+        'cache' => GSCACHEPATH . SBLOG . DIRECTORY_SEPARATOR
+    );
+
+    /** @var array $data_files Array of paths to required files. */
+    public $data_files = array(
+        'settings' => $this->data_paths['basedata'] . 'settings.xml',
+        'categories' => $this->data_paths['basedata'] . 'categories.xml'
+    );
 
     /**
      * Class Constructor
@@ -25,7 +57,110 @@ class SimpleBlog
      */
     public function __construct()
     {
-        // construct the blog instance
+        # Check if required constants are defined, update the class variable defaults
+        if ( defined('SBLOGPATH') ) { $this->data_paths['baseplugin'] == SBLOGPATH; }
+        if ( defined('SBLOGDATA') ) { $this->data_paths['basedata'] == SBLOGDATA; }
+        if ( defined('SBLOGPOSTSPATH') ) { $this->data_paths['posts'] == SBLOGPOSTSPATH; }
+        if ( defined('SBLOGCACHEPATH') ) { $this->data_paths['cache'] == SBLOGCACHEPATH; }
+        if ( defined('SBLOGTEMPLATES') ) { $this->data_paths['templates'] == SBLOGTEMPLATES; }
+        if ( defined('SBLOGSETTINGS') ) { $this->data_files['settings'] == SBLOGSETTINGS; }
+        if ( defined('SBLOGCATEGORIES') ) { $this->data_files['categories'] == SBLOGCATEGORIES; }
+
+        # Check if required directories exist and are writeable, create them if not
+        foreach ( $this->data_paths as $data_path )
+        {
+            if ( file_exists($data_path) )
+            {
+                if ( is_writeable($data_path) === false )
+                {
+                    SimpleBlog_displayMessage( i18n_r(SBLOG . '/DIRECTORY_NOT_WRITABLE') . $data_path, 'error', false );
+                    SimpleBlog_debugLog( "Required directory is not writeable - is_writeable (false): " . $data_path, 'error' );
+                    /** @TODO: Consider attempting to make this writeable before returning error - chmod? */
+                }
+            }
+            else
+            {
+                if ( mkdir($data_path) === false )
+                {
+                    SimpleBlog_displayMessage( i18n_r(SBLOG . '/CANT_CREATE_DIRECTORY') . $data_path, 'error', false );
+                    SimpleBlog_debugLog( "Couldn't create required directory - mkdir (false): " . $data_path, 'error' );
+                }
+
+                if ( getDef('GSDOCHMOD', true) !== false )
+                {
+                    if ( defined('GSCHMOD') )
+                    {
+                        /** @TODO: Handle this as error if it returns false */
+                        @chmod( $data_path, defined('GSCHMOD') ? GSCHMOD : 0755 );
+                    }
+                }
+            }
+        }
+
+        # Check if settings.xml file exists, create it if not
+        if ( file_exists($this->data_files['settings']) === false )
+        {
+            if ( $this->saveSettings($this->default_settings) === false )
+            {
+                SimpleBlog_displayMessage( i18n_r(SBLOG . '/CREATE_SETTINGS_FAILED'), 'error', false );
+                SimpleBlog_debugLog( "Couldn't create the settings file - saveSettings (false)", 'error' );
+            }
+        }
+        else
+        {
+            $saved_settings = $this->getAllSettings();
+            $update_settings = false;
+
+            # Check for missing settings in file
+            $missing_settings = array_diff_key( $this->default_settings, $saved_settings );
+            if ( count($missing_settings) > 0 )
+            {
+                foreach ( $missing_settings as $missing_key => $missing_value )
+                {
+                    $saved_settings[$missing_key] = $missing_value;
+                    SimpleBlog_debugLog( "Added missing setting: " . $missing_key . ' = ' . $missing_value, 'info' );
+                    $update_settings = true;
+                }
+            }
+
+            # Check for redundant settings in file
+            foreach ( $saved_settings as $saved_key => $saved_value )
+            {
+                if ( array_key_exists( $saved_key, $this->default_settings ) === false )
+                {
+                    unset( $saved_settings[$saved_key] );
+                    SimpleBlog_debugLog( "Removed redundant setting: " . $saved_key . ' = ' . $saved_value, 'info' );
+                    $update_settings = true;
+                }
+            }
+
+            # Update settings file if required
+            if ( $update_settings === true )
+            {
+                if ( $this-saveSettings($saved_settings) )
+                {
+                    SimpleBlog_displayMessage( i18n_r(SBLOG . '/SETTINGS_UPDATE_OK'), 'info', false );
+                    SimpleBlog_debugLog( "Successfully updated the settings file - saveSettings (true)", 'info' );
+                }
+                else
+                {
+                    SimpleBlog_displayMessage( i18n_r(SBLOG . '/SETTINGS_UPDATE_FAILED'), 'error', false );
+                    SimpleBlog_debugLog( "Failed to update the settings file - saveSettings (false)", 'error' );
+                }
+            }
+        }
+
+        # Check if categories.xml file exists, create it if not
+        if ( file_exists($this->data_files['categories']) === false )
+        {
+            $categories_xml = new SimpleXMLExtended('<?xml version="1.0" encoding="UTF-8"?><categories/>');
+
+            if ( XMLsave($categories_xml, $this->data_files['categories']) === false )
+            {
+                SimpleBlog_displayMessage( i18n_r(SBLOG . '/CREATE_CATEGORIES_FAILED'), 'error', false );
+                SimpleBlog_debugLog( "Couldn't create the categories file - XMLsave (false)", 'error' );
+            }
+        }
     }
 
 
@@ -47,7 +182,7 @@ class SimpleBlog
 
     /**
      * Get setting value
-     * Gets the currently configured value of a setting
+     * Gets the currently configured value of a setting, default value if not set, empty if unknown
      *
      * @since 1.0
      * @param string $setting The setting key for the value required
@@ -55,7 +190,19 @@ class SimpleBlog
      */
     public function getSetting( string $setting ): string
     {
-        // Gets the value of a specific setting
+        $settings = $this->getAllSettings();
+
+        if ( isset($settings[$setting]) )
+        {
+            return (string) $settings[ $setting ];
+        }
+
+        if ( isset($this->default_settings[$setting]) )
+        {
+            return (string) $this->default_settings[$setting];
+        }
+
+        return (string) '';
     }
 
     /**
