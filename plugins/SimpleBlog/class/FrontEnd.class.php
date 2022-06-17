@@ -22,7 +22,7 @@ class SimpleBlog_FrontEnd extends SimpleBlog
      * @param array $args An optional array of arguments to influence the content
      * @return string A string representation of the generated HTML content
      */
-    public function showPost( string $post, array $args = [] ): string {}
+    public function showPost( string $post, array $args = [] ): string { return ''; }
 
     /**
      * Show a group of posts
@@ -40,6 +40,7 @@ class SimpleBlog_FrontEnd extends SimpleBlog
         // Generate post group listing
 
         // Generate page end - include pagination?
+        return '';
     }
 
     /**
@@ -55,6 +56,7 @@ class SimpleBlog_FrontEnd extends SimpleBlog
     public function showList( string $type = 'recent', array $args = [] ): string
     {
         // Generate an unordered list of items
+        return '';
     }
 
 }

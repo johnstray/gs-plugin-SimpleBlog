@@ -93,24 +93,40 @@ function SimpleBlog_init(): void
  */
 function SimpleBlog_main(): void
 {
+    # Instatiate the core class so that we can make use of it on each of these pages.
+    $SimpleBlog = new SimpleBlog();
+
     if ( isset($_GET['categories']) )
     {
         require_once( SBLOGPATH . 'includes/html/categories.inc.php' );
     }
     elseif ( isset($_GET['settings']) )
     {
-        if ( $_GET['settings'] === 'seo' )
+        switch ( $_GET['settings'] )
         {
-            require_once( SBLOGPATH . 'includes/html/seo-settings.inc.php' );
-        }
-        elseif ( $_GET['settings'] === 'cancel' )
-        {
-            SimpleBlog_displayMessage( i18n_r(SBLOG . '/UI_SAVE_SETTINGS_CANCELED'), 'warn' );
-            require_once( SBLOGPATH . 'includes/html/blog-settings.inc.php' );
-        }
-        else
-        {
-            require_once( SBLOGPATH . 'includes/html/blog-settings.inc.php' );
+            case 'seo':
+                require_once( SBLOGPATH . 'includes/html/seo-settings.inc.php' );
+                break;
+
+            case 'save':
+                if ( $SimpleBlog->saveSettings($_POST) )
+                {
+                    SimpleBlog_displayMessage( "Settings saved", 'info', true );
+                }
+                else
+                {
+                    SimpleBlog_displayMessage( "Settings not saved", 'error' );
+                }
+                require_once( SBLOGPATH . 'includes/html/blog-settings.inc.php' );
+                break;
+
+            case 'cancel':
+                SimpleBlog_displayMessage( i18n_r(SBLOG . '/UI_SAVE_SETTINGS_CANCELED'), 'warn' );
+                require_once( SBLOGPATH . 'includes/html/blog-settings.inc.php' );
+                break;
+
+            default:
+                require_once( SBLOGPATH . 'includes/html/blog-settings.inc.php' );
         }
     }
     elseif ( isset($_GET['help']) )
@@ -280,11 +296,11 @@ function SimpleBlog_displayMessage( string $message, string $type = 'info', bool
  * @param string $type The type of message this is, could be 'ERROR', 'WARN', etc.
  * @return string The formatted message added to the debug log
  */
-function SimpleBlog_debugLog( string $message, string $type = 'INFO' ): string
+function SimpleBlog_debugLog( string $method, string $message, string $type = 'INFO' ): string
 {
     if ( defined('GSDEBUG') && getDef('GSDEBUG', true) === true )
     {
-        $debugMessage = "SimpleBlog Plugin [" . $type . "]: " . $message;
+        $debugMessage = "SimpleBlog Plugin (" . $method . ") [" . $type . "]: " . $message;
         debugLog( $debugMessage );
     }
     return $debugMessage || '';

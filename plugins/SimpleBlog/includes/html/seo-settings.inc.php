@@ -20,19 +20,21 @@ if ( defined('IN_GS') === false ) { die( 'You cannot load this file directly!' )
 </div>
 <p class="text 2"><?php i18n(SBLOG . '/UI_SEO_SETTINGS_PAGE_INTRO'); ?></p>
 
-<form class="largeform gs_simbleblog_ui_form" id="edit" action="load.php?id=<?php echo SBLOG; ?>&settings=seo" method="post">
+<form class="largeform gs_simbleblog_ui_form" id="edit" action="load.php?id=<?php echo SBLOG; ?>&settings=save" method="post">
     <div class="leftsec">
         <label for="categoriesdesc"><?php i18n(SBLOG . '/UI_SEO_CATEGORIES_DESC'); ?></label>
         <span class="hint"><?php i18n(SBLOG . '/UI_SEO_CATEGORIES_HINT'); ?></span>
-        <textarea class="text" name="categoriesdesc" style="height:55px;"></textarea>
+        <textarea class="text" name="categoriesdesc" style="height:55px;"><?php echo $SimpleBlog->getSetting('categoriesdesc'); ?></textarea>
         <label for="categoriesdescshow"><?php i18n(SBLOG . '/UI_SEO_SHOW_ON_PAGE'); ?> : </label>
         <span style="float:right;padding-right:10px;">
             <span style="padding-right:40px;">
-                <input type="radio" name="categoriesdescshow" value="true" style="margin-right:5px;" />
+                <input type="radio" name="categoriesdescshow" value="yes" style="margin-right:5px;"
+                    <?php if ( $SimpleBlog->getSetting('categoriesdescshow') == 'yes' ) echo 'checked="checked"'; ?> />
                 <?php i18n('YES'); ?>
             </span>
             <span style="margin-right:40px;">
-                <input type="radio" name="categoriesdescshow" value="false" style="margin-right:5px;" />
+                <input type="radio" name="categoriesdescshow" value="no" style="margin-right:5px;"
+                    <?php if ( $SimpleBlog->getSetting('categoriesdescshow') == 'no' ) echo 'checked="checked"'; ?> />
                 <?php i18n('NO'); ?>
             </span>
         </span>
@@ -41,15 +43,17 @@ if ( defined('IN_GS') === false ) { die( 'You cannot load this file directly!' )
     <div class="rightsec">
         <label for="archivesdesc"><?php i18n(SBLOG . '/UI_SEO_ARCHIVES_DESC'); ?></label>
         <span class="hint"><?php i18n(SBLOG . '/UI_SEO_ARCHIVES_HINT'); ?></span>
-        <textarea class="text" name="archivesdesc" style="height:55px;"></textarea>
+        <textarea class="text" name="archivesdesc" style="height:55px;"><?php echo $SimpleBlog->getSetting('archivesdesc'); ?></textarea>
         <label for="archivesdescshow"><?php i18n(SBLOG . '/UI_SEO_SHOW_ON_PAGE'); ?> : </label>
         <span style="float:right;padding-right:10px;">
             <span style="padding-right:40px;">
-                <input type="radio" name="archivesdescshow" value="true" style="margin-right:5px;" />
+                <input type="radio" name="archivesdescshow" value="yes" style="margin-right:5px;"
+                    <?php if ( $SimpleBlog->getSetting('archivesdescshow') == 'yes' ) echo 'checked="checked"'; ?> />
                 <?php i18n('YES'); ?>
             </span>
             <span style="margin-right:40px;">
-                <input type="radio" name="archivesdescshow" value="false" style="margin-right:5px;" />
+                <input type="radio" name="archivesdescshow" value="no" style="margin-right:5px;"
+                    <?php if ( $SimpleBlog->getSetting('archivesdescshow') == 'no' ) echo 'checked="checked"'; ?> />
                 <?php i18n('NO'); ?>
             </span>
         </span>
@@ -58,15 +62,17 @@ if ( defined('IN_GS') === false ) { die( 'You cannot load this file directly!' )
     <div class="leftsec">
         <label for="tagsdesc"><?php i18n(SBLOG . '/UI_SEO_TAGS_DESC'); ?></label>
         <span class="hint"><?php i18n(SBLOG . '/UI_SEO_TAGS_HINT'); ?></span>
-        <textarea class="text" name="tagsdesc" style="height:55px;"></textarea>
+        <textarea class="text" name="tagsdesc" style="height:55px;"><?php echo $SimpleBlog->getSetting('tagsdesc'); ?></textarea>
         <label for="tagsdescshow"><?php i18n(SBLOG . '/UI_SEO_SHOW_ON_PAGE'); ?> : </label>
         <span style="float:right;padding-right:10px;">
             <span style="padding-right:40px;">
-                <input type="radio" name="tagsdescshow" value="true" style="margin-right:5px;" />
+                <input type="radio" name="tagsdescshow" value="yes" style="margin-right:5px;"
+                    <?php if ( $SimpleBlog->getSetting('tagsdescshow') == 'yes' ) echo 'checked="checked"'; ?> />
                 <?php i18n('YES'); ?>
             </span>
             <span style="margin-right:40px;">
-                <input type="radio" name="tagsdescshow" value="false" style="margin-right:5px;" />
+                <input type="radio" name="tagsdescshow" value="no" style="margin-right:5px;"
+                    <?php if ( $SimpleBlog->getSetting('tagsdescshow') == 'no' ) echo 'checked="checked"'; ?> />
                 <?php i18n('NO'); ?>
             </span>
         </span>
@@ -75,15 +81,17 @@ if ( defined('IN_GS') === false ) { die( 'You cannot load this file directly!' )
     <div class="rightsec">
         <label for="searchdesc"><?php i18n(SBLOG . '/UI_SEO_SEARCH_DESC'); ?></label>
         <span class="hint"><?php i18n(SBLOG . '/UI_SEO_SEARCH_HINT'); ?></span>
-        <textarea class="text" name="searchdesc" style="height:55px;"></textarea>
+        <textarea class="text" name="searchdesc" style="height:55px;"><?php echo $SimpleBlog->getSetting('searchdesc'); ?></textarea>
         <label for="searchdescshow"><?php i18n(SBLOG . '/UI_SEO_SHOW_ON_PAGE'); ?> : </label>
         <span style="float:right;padding-right:10px;">
             <span style="padding-right:40px;">
-                <input type="radio" name="searchdescshow" value="true" style="margin-right:5px;" />
+                <input type="radio" name="searchdescshow" value="yes" style="margin-right:5px;"
+                    <?php if ( $SimpleBlog->getSetting('searchdescshow') == 'yes' ) echo 'checked="checked"'; ?> />
                 <?php i18n('YES'); ?>
             </span>
             <span style="margin-right:40px;">
-                <input type="radio" name="searchdescshow" value="false" style="margin-right:5px;" />
+                <input type="radio" name="searchdescshow" value="no" style="margin-right:5px;"
+                    <?php if ( $SimpleBlog->getSetting('searchdescshow') == 'no' ) echo 'checked="checked"'; ?> />
                 <?php i18n('NO'); ?>
             </span>
         </span>

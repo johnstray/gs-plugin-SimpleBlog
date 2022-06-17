@@ -21,31 +21,43 @@ if ( defined('IN_GS') === false ) { die( 'You cannot load this file directly!' )
 </div>
 <p class="text 2"><?php i18n(SBLOG . '/UI_SETTINGS_PAGE_INTRO'); ?></p>
 
-<form class="largeform gs_simbleblog_ui_form" id="edit" action="load.php?id=<?php echo SBLOG; ?>" method="post">
+<form class="largeform gs_simbleblog_ui_form" id="edit" action="load.php?id=<?php echo SBLOG; ?>&settings=save" method="post">
 
     <div class="leftsec">
         <label for="displaypage"><?php i18n(SBLOG . '/UI_SETTINGS_DISPLAY_PAGE_LABEL'); ?></label>
         <span class="hint"><?php i18n(SBLOG . '/UI_SETTINGS_DISPLAY_PAGE_HINT'); ?></span>
         <select class="text" name="displaypage">
             <option value=""><?php i18n(SBLOG . '/UI_SETTINGS_DISPLAY_PAGE_NONE'); ?></option>
+            <?php $available_pages = get_available_pages();
+                foreach ( $available_pages as $available_page )
+                {
+                    $selected = ( $available_page['slug'] === $SimpleBlog->getSetting('displaypage') );
+                    echo '<option value="' . $available_page['slug'] . '" ' . ($selected ? 'selected="selected"' : '') . '>';
+                    echo $available_page['slug'] . ' - ' . $available_page['title'] . '</option>';
+                }
+            ?>
         </select>
     </div>
 
     <div class="rightsec">
         <label for="postsperpage"><?php i18n(SBLOG . '/UI_SETTINGS_POSTS_PER_PAGE_LABEL'); ?></label>
         <span class="hint"><?php i18n(SBLOG . '/UI_SETTINGS_POSTS_PER_PAGE_HINT'); ?></span>
-        <input class="text" type="number" name="postsperpage" value="" placeholder="<?php i18n(SBLOG . '/DEFAULT'); ?> 10" />
+        <input class="text" type="number" name="postsperpage"
+            placeholder="<?php echo i18n_r(SBLOG . '/DEFAULT') . ' ' . $SimpleBlog->default_setting_values['postsperpage']; ?>"
+            value="<?php echo $SimpleBlog->getSetting('postsperpage'); ?>" />
     </div>
 
     <div class="leftsec">
         <label for="postformat"><?php i18n(SBLOG . '/UI_SETTINGS_POSTS_FORMAT_LABEL'); ?></label>
         <span class="hint"><?php i18n(SBLOG . '/UI_SETTINGS_POSTS_FORMAT_HINT'); ?></span>
         <span class="radio">
-            <input name="postformat" type="radio" value="Y" style="vertical-align: middle;" />
+            <input name="postformat" type="radio" value="fulltext" style="vertical-align: middle;"
+                <?php if ( $SimpleBlog->getSetting('postformat') == 'fulltext' ) echo 'checked="checked"'; ?> />
             &nbsp; <?php i18n(SBLOG . '/UI_SETTINGS_POSTS_FORMAT_FULL_CONTENT'); ?>
         </span>
         <span class="radio">
-            <input name="postformat" type="radio" value="N" style="vertical-align: middle;" checked />
+            <input name="postformat" type="radio" value="excerpt" style="vertical-align: middle;"
+                <?php if ( $SimpleBlog->getSetting('postformat') == 'excerpt' ) echo 'checked="checked"'; ?> />
             &nbsp; <?php i18n(SBLOG . '/UI_SETTINGS_POSTS_FORMAT_EXCERPT_ONLY'); ?>
         </span>
     </div>
@@ -53,18 +65,22 @@ if ( defined('IN_GS') === false ) { die( 'You cannot load this file directly!' )
     <div class="rightsec">
         <label for="excerptlength"><?php i18n(SBLOG . '/UI_SETTINGS_EXCERPT_LENGTH_LABEL'); ?></label>
         <span class="hint"><?php i18n(SBLOG . '/UI_SETTINGS_EXCERPT_LENGTH_HINT'); ?></span>
-        <input class="text" type="number" name="excerptlength" value="" placeholder="<?php i18n(SBLOG . '/DEFAULT'); ?> 300" />
+        <input class="text" type="number" name="excerptlength"
+            placeholder="<?php echo i18n_r(SBLOG . '/DEFAULT') . ' ' . $SimpleBlog->default_setting_values['excerptlength']; ?>"
+            value="<?php echo $SimpleBlog->getSetting('excerptlength'); ?>" />
     </div>
 
     <div class="leftsec">
-        <label for="postcount"><?php i18n(SBLOG . '/UI_SETTINGS_POSTS_COUNT_LABEL'); ?></label>
+        <label for="postcounts"><?php i18n(SBLOG . '/UI_SETTINGS_POSTS_COUNT_LABEL'); ?></label>
         <span class="hint"><?php i18n(SBLOG . '/UI_SETTINGS_POSTS_COUNT_HINT'); ?></span>
         <span class="radio">
-            <input name="postcount" type="radio" value="Y" style="vertical-align: middle;" checked />
+            <input name="postcounts" type="radio" value="yes" style="vertical-align: middle;"
+                <?php if ( $SimpleBlog->getSetting('postcounts') == 'yes' ) echo 'checked="checked"'; ?> />
             &nbsp; <?php i18n('YES'); ?>
         </span>
         <span class="radio">
-            <input name="postcount" type="radio" value="N" style="vertical-align: middle;" />
+            <input name="postcounts" type="radio" value="no" style="vertical-align: middle;"
+                <?php if ( $SimpleBlog->getSetting('postcounts') == 'no' ) echo 'checked="checked"'; ?> />
             &nbsp; <?php i18n('NO'); ?>
         </span>
     </div>
@@ -72,13 +88,17 @@ if ( defined('IN_GS') === false ) { die( 'You cannot load this file directly!' )
     <div class="rightsec">
         <label for="recentposts"><?php i18n(SBLOG . '/UI_SETTINGS_RECENT_POSTS_LABEL'); ?></label>
         <span class="hint"><?php i18n(SBLOG . '/UI_SETTINGS_RECENT_POSTS_HINT'); ?></span>
-        <input class="text" type="number" name="recentposts" value="" placeholder="<?php i18n(SBLOG . '/DEFAULT'); ?> 5" />
+        <input class="text" type="number" name="recentposts"
+            placeholder="<?php echo i18n_r(SBLOG . '/DEFAULT') . ' ' . $SimpleBlog->default_setting_values['recentposts']; ?>"
+            value="<?php echo $SimpleBlog->getSetting('recentposts'); ?>" />
     </div>
 
     <div class="leftsec">
         <label for="uploaderpath"><?php i18n(SBLOG . '/UI_SETTINGS_UPLOADER_PATH_LABEL'); ?></label>
         <span class="hint"><?php i18n(SBLOG . '/UI_SETTINGS_UPLOADER_PATH_HINT'); ?></span>
-        <input class="text" type="text" name="uploaderpath" value="" placeholder="<?php i18n(SBLOG . '/DEFAULT'); ?> blog/" />
+        <input class="text" type="text" name="uploaderpath"
+            placeholder="<?php echo i18n_r(SBLOG . '/DEFAULT') . ' ' . $SimpleBlog->default_setting_values['uploaderpath']; ?>"
+            value="<?php echo $SimpleBlog->getSetting('uploaderpath'); ?>" />
     </div>
 
     <div class="clear"></div>
@@ -86,14 +106,18 @@ if ( defined('IN_GS') === false ) { die( 'You cannot load this file directly!' )
     <div class="widesec">
         <h3><?php i18n(SBLOG . '/RSS_FEED'); ?></h3>
         <div class="leftsec">
-            <label for="rssfeedtitle"><?php i18n(SBLOG . '/UI_SETTINGS_RSS_FEED_TITLE_LABEL'); ?></label>
+            <label for="rsstitle"><?php i18n(SBLOG . '/UI_SETTINGS_RSS_FEED_TITLE_LABEL'); ?></label>
             <span class="hint"><?php i18n(SBLOG . '/UI_SETTINGS_RSS_FEED_TITLE_HINT'); ?></span>
-            <input class="text" type="text" name="rssfeedtitle" value="" />
+            <input class="text" type="text" name="rsstitle"
+                placeholder="<?php echo $SimpleBlog->default_setting_values['rsstitle']; ?>"
+                value="<?php echo $SimpleBlog->getSetting('rsstitle'); ?>" />
         </div>
         <div class="rightsec">
-            <label for="rssfeeddesc"><?php i18n(SBLOG . '/UI_SETTINGS_RSS_FEED_DESC_LABEL'); ?></label>
+            <label for="rssdescription"><?php i18n(SBLOG . '/UI_SETTINGS_RSS_FEED_DESC_LABEL'); ?></label>
             <span class="hint"><?php i18n(SBLOG . '/UI_SETTINGS_RSS_FEED_DESC_HINT'); ?></span>
-            <input class="text" type="text" name="rssfeeddesc" value="" />
+            <input class="text" type="text" name="rssdescription"
+                placeholder="<?php echo $SimpleBlog->default_setting_values['rssdescription']; ?>"
+                value="<?php echo $SimpleBlog->getSetting('rssdescription'); ?>" />
         </div>
         <div class="clear"></div>
     </div>

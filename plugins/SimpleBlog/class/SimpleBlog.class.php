@@ -13,27 +13,33 @@ if ( defined('IN_GS') === false ) { die( 'You cannot load this file directly!' )
 
 class SimpleBlog
 {
-    /** @var array $default_settings Default configuration settting for the Blog. */
+    /** @var array $default_settings Default configuration settings for the Blog. */
     private $default_settings = array(
-        'blogurl'               => 'index',
-        'prettyurls'            => 'no',
-        'postsperpage'          => '10',
-        'recentposts'           => '5',
-        'postformat'            => 'excerpt',
-        'excerptlength'         => '350',
-        'postcounts'            => 'yes',
-        'uploaderpath'          => 'blog/',
-        'rsstitle'              => '',
-        'rssdescription'        => '',
-        'categoriesdesc'        => '',
-        'categoriesdescshow'    => 'yes',
-        'archivesdesc'          => '',
-        'archivesdescshow'      => 'yes',
-        'tagsdesc'              => '',
-        'tagsdescshow'          => 'yes',
-        'searchdesc'            => '',
-        'searchdescshow'        => 'yes'
+        [ 'displaypage', 'index', 'page' ],
+        [ 'prettyurls', 'no', 'yesno' ],
+        [ 'postsperpage', '10', 'number' ],
+        [ 'recentposts', '5', 'number' ],
+        [ 'postformat', 'excerpt', 'preval', 'excerpt,fulltext'],
+        [ 'excerptlength', '350', 'number' ],
+        [ 'postcounts', 'yes', 'yesno' ],
+        [ 'uploaderpath', 'blog/', 'uploadpath' ],
+        [ 'rsstitle', '', 'text' ],
+        [ 'rssdescription', '', 'text' ],
+        [ 'categoriesdesc', '', 'text' ],
+        [ 'categoriesdescshow', 'yes', 'yesno' ],
+        [ 'archivesdesc', '', 'text' ],
+        [ 'archivesdescshow', 'yes', 'yesno' ],
+        [ 'tagsdesc', '', 'text' ],
+        [ 'tagsdescshow', 'yes', 'yesno' ],
+        [ 'searchdesc', '', 'text' ],
+        [ 'searchdescshow', 'yes', 'yesno' ]
     );
+
+    /**
+     * @var array $default_setting_values Default configuration settings
+     * as single dimension array. Constructor will generate.
+     */
+    public $default_setting_values = array();
 
     /** @var array $data_paths Array of paths to required directories. */
     public $data_paths = array(
@@ -58,32 +64,36 @@ class SimpleBlog
     public function __construct()
     {
         # Check if required constants are defined, update the class variable defaults
-        if ( defined('SBLOGPATH') ) { $this->data_paths['baseplugin'] == SBLOGPATH; }
-        if ( defined('SBLOGDATA') ) { $this->data_paths['basedata'] == SBLOGDATA; }
-        if ( defined('SBLOGPOSTSPATH') ) { $this->data_paths['posts'] == SBLOGPOSTSPATH; }
-        if ( defined('SBLOGCACHEPATH') ) { $this->data_paths['cache'] == SBLOGCACHEPATH; }
-        if ( defined('SBLOGTEMPLATES') ) { $this->data_paths['templates'] == SBLOGTEMPLATES; }
-        if ( defined('SBLOGSETTINGS') ) { $this->data_files['settings'] == SBLOGSETTINGS; }
-        if ( defined('SBLOGCATEGORIES') ) { $this->data_files['categories'] == SBLOGCATEGORIES; }
+        if ( defined('SBLOGDATA') ) { $this->data_paths['basedata'] = SBLOGDATA; }
+        if ( defined('SBLOGPOSTSPATH') ) { $this->data_paths['posts'] = SBLOGPOSTSPATH; }
+        if ( defined('SBLOGCACHEPATH') ) { $this->data_paths['cache'] = SBLOGCACHEPATH; }
+        if ( defined('SBLOGSETTINGS') ) { $this->data_files['settings'] = SBLOGSETTINGS; }
+        if ( defined('SBLOGCATEGORIES') ) { $this->data_files['categories'] = SBLOGCATEGORIES; }
+
+        # Generate the $default_setting_values array from default settings
+        foreach ( $this->default_settings as $default_setting )
+        {
+            $this->default_setting_values[$default_setting[0]] = $default_setting[1];
+        }
 
         # Check if required directories exist and are writeable, create them if not
-        foreach ( $this->data_paths as $data_path )
+        foreach ( $this->data_paths as $data_path_key => $data_path )
         {
             if ( file_exists($data_path) )
             {
                 if ( is_writeable($data_path) === false )
                 {
                     SimpleBlog_displayMessage( i18n_r(SBLOG . '/DIRECTORY_NOT_WRITABLE') . $data_path, 'error', false );
-                    SimpleBlog_debugLog( "Required directory is not writeable - is_writeable (false): " . $data_path, 'error' );
+                    SimpleBlog_debugLog( __METHOD__, "Required directory is not writeable - is_writeable (false): " . $data_path, 'error' );
                     /** @TODO: Consider attempting to make this writeable before returning error - chmod? */
                 }
             }
             else
             {
-                if ( mkdir($data_path) === false )
+                if ( @mkdir($data_path) === false )
                 {
                     SimpleBlog_displayMessage( i18n_r(SBLOG . '/CANT_CREATE_DIRECTORY') . $data_path, 'error', false );
-                    SimpleBlog_debugLog( "Couldn't create required directory - mkdir (false): " . $data_path, 'error' );
+                    SimpleBlog_debugLog( __METHOD__, "Couldn't create required directory - mkdir (false): " . $data_path, 'error' );
                 }
 
                 if ( getDef('GSDOCHMOD', true) !== false )
@@ -100,10 +110,10 @@ class SimpleBlog
         # Check if settings.xml file exists, create it if not
         if ( file_exists($this->data_files['settings']) === false )
         {
-            if ( $this->saveSettings($this->default_settings) === false )
+            if ( $this->saveSettings($this->default_setting_values) === false )
             {
                 SimpleBlog_displayMessage( i18n_r(SBLOG . '/CREATE_SETTINGS_FAILED'), 'error', false );
-                SimpleBlog_debugLog( "Couldn't create the settings file - saveSettings (false)", 'error' );
+                SimpleBlog_debugLog( __METHOD__, "Couldn't create the settings file - saveSettings (false)", 'error' );
             }
         }
         else
@@ -112,13 +122,13 @@ class SimpleBlog
             $update_settings = false;
 
             # Check for missing settings in file
-            $missing_settings = array_diff_key( $this->default_settings, $saved_settings );
+            $missing_settings = array_diff_key( $this->default_setting_values, $saved_settings );
             if ( count($missing_settings) > 0 )
             {
                 foreach ( $missing_settings as $missing_key => $missing_value )
                 {
                     $saved_settings[$missing_key] = $missing_value;
-                    SimpleBlog_debugLog( "Added missing setting: " . $missing_key . ' = ' . $missing_value, 'info' );
+                    SimpleBlog_debugLog( __METHOD__, "Added missing setting: " . $missing_key . ' = ' . $missing_value, 'info' );
                     $update_settings = true;
                 }
             }
@@ -126,10 +136,10 @@ class SimpleBlog
             # Check for redundant settings in file
             foreach ( $saved_settings as $saved_key => $saved_value )
             {
-                if ( array_key_exists( $saved_key, $this->default_settings ) === false )
+                if ( array_key_exists( $saved_key, $this->default_setting_values ) === false )
                 {
                     unset( $saved_settings[$saved_key] );
-                    SimpleBlog_debugLog( "Removed redundant setting: " . $saved_key . ' = ' . $saved_value, 'info' );
+                    SimpleBlog_debugLog( __METHOD__, "Removed redundant setting: " . $saved_key . ' = ' . $saved_value, 'info' );
                     $update_settings = true;
                 }
             }
@@ -137,15 +147,15 @@ class SimpleBlog
             # Update settings file if required
             if ( $update_settings === true )
             {
-                if ( $this-saveSettings($saved_settings) )
+                if ( $this->saveSettings($saved_settings) )
                 {
                     SimpleBlog_displayMessage( i18n_r(SBLOG . '/SETTINGS_UPDATE_OK'), 'info', false );
-                    SimpleBlog_debugLog( "Successfully updated the settings file - saveSettings (true)", 'info' );
+                    SimpleBlog_debugLog( __METHOD__, "Successfully updated the settings file - saveSettings (true)", 'info' );
                 }
                 else
                 {
                     SimpleBlog_displayMessage( i18n_r(SBLOG . '/SETTINGS_UPDATE_FAILED'), 'error', false );
-                    SimpleBlog_debugLog( "Failed to update the settings file - saveSettings (false)", 'error' );
+                    SimpleBlog_debugLog( __METHOD__, "Failed to update the settings file - saveSettings (false)", 'error' );
                 }
             }
         }
@@ -158,7 +168,7 @@ class SimpleBlog
             if ( XMLsave($categories_xml, $this->data_files['categories']) === false )
             {
                 SimpleBlog_displayMessage( i18n_r(SBLOG . '/CREATE_CATEGORIES_FAILED'), 'error', false );
-                SimpleBlog_debugLog( "Couldn't create the categories file - XMLsave (false)", 'error' );
+                SimpleBlog_debugLog( __METHOD__, "Couldn't create the categories file - XMLsave (false)", 'error' );
             }
         }
     }
@@ -170,14 +180,21 @@ class SimpleBlog
 
     /**
      * Get all Settings
-     * Gets all the configuration settings from the settings.xml file and returns them as an array
+     * Gets all the configuration settings from the settings.xml file and returns them as an array.
      *
      * @since 1.0
      * @return array An array containg all settings as key=>value pairs
      */
     public function getAllSettings(): array
     {
-        // Gets the array of settings
+        # Pull in the settings file and decode the XML content to array
+        foreach ( getXML($this->data_files['settings']) as $setting_key => $setting_value )
+        {
+            $settings_array[(string) $setting_key] = (string) $setting_value;
+        }
+
+        # Return the settings array, ensuring an array is returned
+        return is_array($settings_array) ? $settings_array : array();
     }
 
     /**
@@ -192,16 +209,19 @@ class SimpleBlog
     {
         $settings = $this->getAllSettings();
 
+        # Check if setting is set, return it's value if it is
         if ( isset($settings[$setting]) )
         {
             return (string) $settings[ $setting ];
         }
 
+        # Check if settings is available as a default, return default value if it is
         if ( isset($this->default_settings[$setting]) )
         {
             return (string) $this->default_settings[$setting];
         }
 
+        # Setting is unknown, return an empty string
         return (string) '';
     }
 
@@ -217,7 +237,65 @@ class SimpleBlog
      */
     public function saveSettings( array $settings ): bool
     {
-        // Saves the settings to file
+        $saving_settings = array();
+
+        # Validate the array of settings
+        foreach ( $settings as $setting_key => $setting_value )
+        {
+            # Make sure setting key is known, else we ignore it
+            if ( array_key_exists($setting_key, $this->default_setting_values) )
+            {
+                # Make sure the setting value is valid for this key
+                if ( $this->validateSetting($setting_key, $setting_value) )
+                {
+                    # All is good, add to settings to be saved
+                    $saving_settings[$setting_key] = $setting_value;
+                }
+                else
+                {
+                    # Setting failed validation, ignore and save empty instead
+                    $saving_settings[$setting_key] = '';
+                }
+            }
+        }
+
+        # Check for skipped settings
+        $skipped_settings = array_diff_key( $this->default_setting_values, $saving_settings );
+        if ( count($skipped_settings) > 0 )
+        {
+            foreach ( $skipped_settings as $skipped_key => $skipped_value )
+            {
+                if ( $this->getSetting($skipped_key) !== '' )
+                {
+                    $saving_settings[$skipped_key] = $this->getSetting($skipped_key);
+                }
+                else
+                {
+                    $saving_settings[$skipped_key] = $skipped_value;
+                }
+            }
+        }
+
+        # Convert settings array to XML data
+        $settings_xml = new SimpleXMLExtended('<?xml version="1.0" encoding="utf-8"?><settings/>');
+        foreach ( $saving_settings as $saving_key => $saving_value )
+        {
+            # Add setting key as a new XML node
+            $settings_xml_node = $settings_xml->addChild($saving_key);
+
+            # Add setting value to the above XML node
+            $settings_xml_node->addCData($saving_value);
+        }
+
+        # Save settings array to file
+        if ( XMLsave($settings_xml, $this->data_files['settings']) === false )
+        {
+            # Saving settings to file failed, spit-out some debugging info
+            SimpleBlog_debugLog( __METHOD__, "Couldn't save settings to file - XMLsave (false)", 'error' );
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -236,6 +314,7 @@ class SimpleBlog
     public function getAllPosts(): array
     {
         // Returns an associative array of posts
+        return array();
     }
 
     /**
@@ -251,6 +330,7 @@ class SimpleBlog
     {
         // Returns an associative array of most recent posts, length limited by $limit
         // $limit = -1 will use configured setting
+        return array();
     }
 
     /**
@@ -264,6 +344,7 @@ class SimpleBlog
     public function getPost( string $slug ): array
     {
         // Returns an array containing all data for the given post
+        return array();
     }
 
     /**
@@ -283,6 +364,7 @@ class SimpleBlog
     public function savePost( array $post, bool $force_new = false ): string
     {
         // Saves a post to file
+        return '';
     }
 
     /**
@@ -296,6 +378,7 @@ class SimpleBlog
     public function deletePost( string $slug ): bool
     {
         // Deletes a post
+        return false;
     }
 
 
@@ -321,6 +404,7 @@ class SimpleBlog
         //          'post-count' => 22
         //      )
         //  )
+        return array();
     }
 
     /**
@@ -345,6 +429,7 @@ class SimpleBlog
         //          ...
         //      )
         //  )
+        return array();
     }
 
     /**
@@ -365,6 +450,7 @@ class SimpleBlog
     {
         // Saves a category to the categories file
         // Updates details if category already exists
+        return false;
     }
 
     /**
@@ -379,6 +465,7 @@ class SimpleBlog
     {
         // Deletes a category from the categories file
         // Removes the category from all posts that are attached
+        return false;
     }
 
 
@@ -410,6 +497,7 @@ class SimpleBlog
         //  )
         // Size of archive is detemined by $basis: daily, weekly, monthly, yearly
         // Slug woud be either: '24-08-2021', 'w26-2021', '08-2021', '2021'
+        return array();
     }
 
     /**
@@ -437,6 +525,7 @@ class SimpleBlog
         //          ...
         //      )
         //  )
+        return array();
     }
 
 
@@ -462,6 +551,7 @@ class SimpleBlog
         //          'post-count' => 365
         //      )
         //  )
+        return array();
     }
 
     /**
@@ -485,6 +575,7 @@ class SimpleBlog
         //          ...
         //      )
         //  )
+        return array();
     }
 
 
@@ -503,6 +594,7 @@ class SimpleBlog
     private function generateSlug( string $string ): string
     {
         // Generates a slug based on the given title
+        return '';
     }
 
     /**
@@ -519,6 +611,7 @@ class SimpleBlog
     {
         // Generates an except from the given content, removing all markup.
         // Refer: inc/template_functions.php getExcerpt()
+        return '';
     }
 
     /**
@@ -530,10 +623,15 @@ class SimpleBlog
      *                     Can be one of ['post', 'category', 'archive', 'tag']
      * @return string A URL to the blog or specified section of the blog
      */
-    public function generateUrl( string $type = '' ) : string
+    public function generateUrl( string $type = '' ): string
     {
         // Generates a URL to the blog item. Can optionally be passed a section for the url
+        return '';
     }
+
+    public function getPageTitle(): string { return ''; }
+
+    public function getPageDescription(): string { return ''; }
 
     /**
      * Search Posts
@@ -547,6 +645,52 @@ class SimpleBlog
     public function searchPosts( string $keyphrase, $filter = ['content','title'] ): array
     {
         // Filter through the posts looking for the keyphrase in the given filter(s)
+        return array();
+    }
+
+    public function validateSetting( string $setting_key, string $setting_value ): bool
+    {
+        foreach ( $this->default_settings as $setting )
+        {
+            if ( $setting_key === $setting[0] )
+            {
+                switch ( $setting[2] )
+                {
+                    case 'yesno':
+                        if ( $setting_value === 'yes' || $setting_value === 'no' ) { return true; }
+                        break;
+
+                    case 'number':
+                        if ( ctype_digit($setting_value) ) { return true; }
+                        break;
+
+                    case 'text':
+                        if ( ctype_print($setting_value) || $setting_value === "" ) { return true; }
+                        break;
+
+                    case 'preval':
+                        $possible_values = explode(',', $setting[3]);
+                        if ( in_array(strtolower($setting_value), $possible_values) ) { return true; }
+                        break;
+
+                    case 'uploadpath':
+                        $upload_path = GSDATAUPLOADPATH . $setting_value;
+                        if ( file_exists($upload_path) && is_writable($upload_path) ) { return true; }
+                        break;
+
+                    case 'page':
+                        $available_pages = get_available_pages();
+                        foreach ( $available_pages as $available_page )
+                        {
+                            if ( $setting_value === $available_page['slug'] ) { return true; }
+                        }
+                        break;
+                }
+            }
+        }
+
+var_dump('Failed: ' . $setting_key .' = '. $setting_value);
+        return false;
     }
 
 
@@ -566,6 +710,7 @@ class SimpleBlog
     private function cachePut( string $cache_id, string $content ): bool
     {
         // Saves something to the cache.
+        return false;
     }
 
     /**
@@ -579,6 +724,7 @@ class SimpleBlog
     private function cacheGet( string $cache_id ): string
     {
         // Gets something from the cache
+        return '';
     }
 
     /**
@@ -593,6 +739,7 @@ class SimpleBlog
     {
         // Removes all cache content and rebuilds it by looping over post data
         // Will also recheck posts against categories.xml file
+        return false;
     }
 
 }
