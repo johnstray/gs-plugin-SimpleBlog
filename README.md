@@ -26,7 +26,13 @@
 <p>&nbsp;</p>
 
 ## About
-A simple an easy to use blog for GetSimple. With this plugin, you can create blog posts, sort posts by category, view posts in monthly archives, plus much more. This version is a fork of the original by @mikehenken and is now being actively maintained here.
+A simple and easy to use, yet powerful blog system for GetSimple CMS. With this plugin, you can create blog posts, sort posts by category, view posts in monthly archives, plus much more. The original concept for this plugin was by @mikehenken and was carried on through GetSimple Blog v3.x, but I've now decided to break away and start from scratch with an all-new code base. I welcome any and all suggestions for future improvements, and if you find any bugs, then please let me know.
+
+The plugin will be a direct replacement for GetSimple Blog and will contain many new features that will be added natively, such as hooks and filters to allow extensibility by other plugins, native integration with some existing plugins, plus much more.
+
+This plugin is currently under active development, but is a little while away from completion and ready for release yet. If you’d like to track the development progress, please follow this GitHub project
+
+A new team of translators will be needed for this plugin. If you speak any languages other than those that are already included, then please send me a PM so that I can add you to the project. A GitHub account is a must as the development process is maintained from there.
 
 #### Features Include:
 - Blog Categories
@@ -42,7 +48,6 @@ A simple an easy to use blog for GetSimple. With this plugin, you can create blo
 You can install this plugin to your GetSimple installation by following these simple instructions.
 
 - Download ZIP file with plugin from the GetSimple Extend Repository.
-  http://get-simple.info/extend/plugin/getsimple-blog/810/
 - Unzip it into the "plugins" folder of your GetSimple installation.
 - Ensure your /Data and /Backups folder have write permissions.
 - Log in to your GetSimple administration panel.
@@ -56,19 +61,10 @@ Once installed, click on the new "Blog" tab in the Admin panel then click on "He
 ---
 
 ## Contributions
-Everyone is welcome to make suggestions on how this plugin can be improved by either submitting an issue or a pull-requests.
-If you would like to contribute to this project, please first have a ready of the [Contributing Guidelines](.github/CONTRIBUTING.md).
+Everyone is welcome to make suggestions on how this plugin can be improved by either submitting an issue or a pull-request.
+If you would like to contribute to this project, please first have a read of the Contributing Guidelines.
 
 ## License
 This project is licensed under the terms of the GNU General Public Licence v3 (or later).
 
 This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistrbute it and monify it under certain conditions. See [LICENCE](LICENCE) for details.
-
-## Thanks
-I would like to give a big thanks and a shoutout to all those who have contributed to this project so far. Your work is greatly appreciated.
-
-- Nicola Laviola [ @nikynik ], Tanguy JACQUET [ @jeckyl ], David Negrello [ @dvdn ],<br />
-  Feodor Rusanov [ @f30d0r ], Helge Sverre Hessevik Liseth [ @HelgeSverre ]
-- Plus: @madvik, @jEsuSdA, @gschintgen, @ferchosj, @Every0ne
-- GS Forums: Oleg06
-
