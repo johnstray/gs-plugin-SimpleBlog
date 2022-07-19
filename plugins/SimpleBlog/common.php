@@ -109,6 +109,13 @@ function SimpleBlog_main(): void
                 break;
 
             case 'save':
+                if ( defined('GSNOCSRF') == false || GSNOCSRF == false )
+                {
+                    if ( check_nonce(($_POST['nonce'] ?: ''), SBLOG.'savesettings') == false )
+                    {
+                        die( 'CSRF detected!' );
+                    }
+                }
                 if ( $SimpleBlog->saveSettings($_POST) )
                 {
                     SimpleBlog_displayMessage( "Settings saved", 'info', true );
@@ -143,6 +150,13 @@ function SimpleBlog_main(): void
         $posts = array();
         if ( isset($_GET['search']) && isset($_GET['filter']) )
         {
+            if ( defined('GSNOCSRF') == false || GSNOCSRF == false )
+            {
+                if ( check_nonce(($_GET['nonce'] ?: ''), SBLOG.'filterposts') == false )
+                {
+                    die( 'CSRF detected!' );
+                }
+            }
             $posts = $SimpleBlog->searchPosts( $_GET['search'], $_GET['filter'] );
         }
         else
@@ -152,6 +166,13 @@ function SimpleBlog_main(): void
 
         if ( isset($_GET['delete']) )
         {
+            if ( defined('GSNOCSRF') == false || GSNOCSRF == false )
+            {
+                if ( check_nonce(($_GET['nonce'] ?: ''), SBLOG.'deletepost') == false )
+                {
+                    die( 'CSRF detected!' );
+                }
+            }
             // Delete the post given in slug
         }
 

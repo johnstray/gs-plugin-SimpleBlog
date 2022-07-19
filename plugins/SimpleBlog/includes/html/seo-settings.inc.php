@@ -21,6 +21,8 @@ if ( defined('IN_GS') === false ) { die( 'You cannot load this file directly!' )
 <p class="text 2"><?php i18n(SBLOG . '/UI_SEO_SETTINGS_PAGE_INTRO'); ?></p>
 
 <form class="largeform gs_simbleblog_ui_form" id="edit" action="load.php?id=<?php echo SBLOG; ?>&settings=save" method="post">
+    <input type="hidden" name="nonce" value="<?php echo get_nonce(SBLOG."savesettings"); ?>" />
+
     <div class="leftsec">
         <label for="categoriesdesc"><?php i18n(SBLOG . '/UI_SEO_CATEGORIES_DESC'); ?></label>
         <span class="hint"><?php i18n(SBLOG . '/UI_SEO_CATEGORIES_HINT'); ?></span>
