@@ -305,16 +305,18 @@ class SimpleBlog
 
     /**
      * Get all posts
-     * Returns an associative array of posts with data, will have either an excerpt or the full content depending on
-     * the configured setting for this. @NOTE: Maybe return both full and excerpt?
+     * Returns an array of post slugs - getPost can be used in a loop over this array to get the details for all posts.
      *
      * @since 1.0
-     * @return array An associative array of posts
+     * @return array An array of post slugs
      */
     public function getAllPosts(): array
     {
-        // Returns an associative array of posts
-        return array();
+        # Get a list of files in the posts directory and trim the '.xml' from them.
+        $post_files = getXmlFiles( $this->data_paths['posts'] );
+        $post_slugs = array_map( function($str) { return substr($str, 0, -4); }, $post_files );
+
+        return $post_slugs;
     }
 
     /**
@@ -343,8 +345,20 @@ class SimpleBlog
      */
     public function getPost( string $slug ): array
     {
-        // Returns an array containing all data for the given post
-        return array();
+        $post_data = array();
+
+        if ( file_exists($this->data_paths['posts'] . $slug . '.xml') )
+        {
+            $post_xml = getXML( $this->data_paths['posts'] . $slug . '.xml' );
+
+            foreach ( $post_xml as $post_key => $post_value )
+            {
+                $post_data[(string) $post_key] = (string) $post_value;
+            }
+        }
+
+        // Returns an array containing all data for the given post - empty if file does not exist
+        return $post_data;
     }
 
     /**
