@@ -48,6 +48,111 @@
     margin: 0 0 20px;
 }
 
+.gs_simpleblog_ui_filter-box {
+    text-align: left;
+    padding: 10px 15px;
+    display: none;
+}
+.gs_simpleblog_ui_filter-box p {
+    border-bottom: 1px dotted #ccc;
+    margin-bottom: 10px;
+    font-size: 11px;
+    line-height: 12px;
+}
+.gs_simpleblog_ui_filter-box select.text {
+    width: 35.6%;
+}
+.gs_simpleblog_ui_filter-box input.text {
+    width: 50%;
+}
+.gs_simpleblog_ui_filter-box input.submit {
+    width: 12%;
+    height: 24px;
+    padding: 5px 10px;
+}
+
+/* Posts Management Section */
+.gs_simbleblog_ui_no-posts {
+    padding: 20px 50px;
+    margin: 50px auto;
+    width: max-content;
+    text-align: center;
+    background-color: rgba(11, 85, 132, 0.1)
+}
+.gs_simbleblog_ui_no-posts h4 {
+    font-size: 16px;
+    font-family: Georgia, Times, 'Times New Roman', serif;
+    font-weight: normal;
+    font-style: italic;
+    color: #333;
+    margin: 0;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+    border-radius: 2px;
+    line-height: 22px;
+
+}
+.gs_simbleblog_ui_no-posts p {
+    margin: 0;
+}
+
+#gs_simbleblog_ui_posts-table {
+    margin-bottom: 0;
+}
+#gs_simbleblog_ui_posts-table td {
+    padding: 10px;
+    vertical-align: middle;
+}
+#gs_simbleblog_ui_posts-table td > img {
+    background-color: #fff;
+    height: 37px;
+    width: 66px;
+    float: left;
+    margin: -5px 10px -5px -5px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+#gs_simbleblog_ui_posts-table td > a {
+    text-decoration: none;
+    width: 100%;
+    display: block;
+    line-height: 16px;
+}
+#gs_simbleblog_ui_posts-table td > div {
+    position: relative;
+    font-size: 10px;
+    line-height: 12px;
+}
+#gs_simbleblog_ui_posts-table td > div > div {
+    float: left;
+}
+#gs_simbleblog_ui_posts-table td > div > div:nth-child(-n+2) {
+    width: 28%;
+}
+#gs_simbleblog_ui_posts-table td > div > div.clear {
+    float: none;
+    clear: both;
+}
+
+#gs_simbleblog_ui_posts-table td.delete > a,
+#gs_simbleblog_ui_posts-table td.secondarylink > a {
+    width: 20px;
+    height: 20px;
+    line-height:20px;
+}
+
+#gs_simbleblog_ui_posts-table td.delete > a svg,
+#gs_simbleblog_ui_posts-table td.secondarylink > a svg {
+    width: 16px;
+    margin-top: 3px;
+}
+
+#gs_simbleblog_ui_pagination {
+    margin: 20px 0 0;
+    padding: 5px;
+    background-color: #f9f9f9;
+    border: 1px solid #e8e8e8;
+    border-radius: 2px;
+}
+
 /* Copyright Text Section */
 .gs_simpleblog_ui_copyright-text {
   text-shadow: 1px 1px 0 rgba(255,255,255,.4);

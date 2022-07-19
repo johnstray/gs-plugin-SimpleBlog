@@ -133,8 +133,28 @@ function SimpleBlog_main(): void
     {
         require_once( SBLOGPATH . 'includes/html/help.inc.php' );
     }
+    elseif ( isset($_GET['editor']) )
+    {
+        // Post editor
+    }
     else
     {
+        $categories = $SimpleBlog->getAllCategories();
+        $posts = array();
+        if ( isset($_GET['search']) && isset($_GET['filter']) )
+        {
+            $posts = $SimpleBlog->searchPosts( $_GET['search'], $_GET['filter'] );
+        }
+        else
+        {
+            $posts = $SimpleBlog->getAllPosts();
+        }
+
+        if ( isset($_GET['delete']) )
+        {
+            // Delete the post given in slug
+        }
+
         require_once( SBLOGPATH . 'includes/html/manage-posts.inc.php' );
     }
 
@@ -157,7 +177,7 @@ function SimpleBlog_setPageTitle(): string
     $SimpleBlog = new SimpleBlog();
     $blogTitle = $SimpleBlog->getPageTitle();
 
-    if ( $blogTitle !== false )
+    if ( empty($blogTitle) === false )
     {
         $title = $blogTitle;
     }
@@ -179,7 +199,7 @@ function SimpleBlog_setPageDescription(): string
     $SimpleBlog = new SimpleBlog();
     $blogDescription = $SimpleBlog->getPageDescription();
 
-    if ( $blogDescription !== false )
+    if ( empty($blogDescription) === false )
     {
         $metad = $blogDescription;
     }

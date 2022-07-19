@@ -93,9 +93,15 @@ $i18n = array(
     # -----
 
     'UI_MANAGE_PAGE_TITLE' => "Manage Blog Posts",
-    'UI_MANAGE_PAGE_INTRO' => "",
+    'UI_MANAGE_PAGE_INTRO' => "Edit existing posts or create new posts. The table below shows posts that currently exist.",
     'UI_NEW_POST_BUTTON' => "New Post",
     'UI_NEW_POST_BUTTON_HINT' => "Create a new post on the blog",
+    'UI_FILTER_BOX_LABEL' => "Filter Posts",
+    'UI_FILTER_BOX_HINT' => "Choose from the options below to filter the list of posts",
+    'UI_POSTS_NO_POSTS' => "You haven&apos;t created any posts yet...",
+    'UI_POSTS_NO_POSTS_HINT' => "Why not create a new post now?",
+    'UI_POSTS_NO_RESULTS' => "There are no search results to show!",
+    'UI_POSTS_NO_RESULTS_HINT' => "Try your search again with different parameters.",
 
 
     # -----
@@ -132,6 +138,17 @@ $i18n = array(
     'CANCEL_CHANGES' => "Cancel Changes",
     'RESET_TO_DEFAULT' => "Reset to Default",
     'SETTINGS_LAST_SAVED_BY' => "Settings last saved by",
+    'POST_TITLE' => "Post Title",
+    'POST_AUTHOR' => "Post Author",
+    'POST_CONTENT' => "Post Content",
+    'CATEGORY_NAME' => "Category Name",
+    'PUBLISHED_DATE' => "Published Date",
+    'TAG' => "Tag",
+    'ALL_FIELDS' => "All Fields",
+    'SEARCH' => "Search",
+    'CATEGORY' => "Category",
+    'AUTHOR' => "Author",
+    'PUBLISHED' => "Published",
 
     # -----
     # SimpleBlog Class
