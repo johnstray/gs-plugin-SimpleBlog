@@ -142,5 +142,5 @@ if ( defined('IN_GS') === false ) { die( 'You cannot load this file directly!' )
 
 	</div>
 
-	<p class="editfooter"><i class="far fa-fw fa-clock"></i>&nbsp;<?php i18n(SBLOG . '/SETTINGS_LAST_SAVED_BY'); ?> <em>Plugin Setup</em> <?php i18n('ON'); ?> <em><?php echo date('F jS, Y - g:i a', time()); ?></em></p>
+	<p class="editfooter"><i class="far fa-fw fa-clock"></i>&nbsp;<?php i18n(SBLOG . '/SETTINGS_LAST_SAVED_BY'); ?> <em>Plugin Setup</em> <?php i18n('ON'); ?> <em><?php echo date(i18n_r('DATE_AND_TIME_FORMAT'), time()); ?></em></p>
 </form>
