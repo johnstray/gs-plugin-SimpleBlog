@@ -392,7 +392,7 @@ class SimpleBlog
     }
 
     /**
-     * Get recent posts
+     * Get recent posts - @TODO: Write this function
      * Returns and associative array of the most recent posts with data. $limit determines how many posts to get, and
      * setting this to -1 will use the configured setting
      *
@@ -434,7 +434,7 @@ class SimpleBlog
     }
 
     /**
-     * Save post
+     * Save post - @TODO: Write this function
      * Saves a post to file with the given array of data, then updates caches and categories.xml as required. If the
      * post already exists, it will be updated with the new data. If the $force_new parameter is given, a new post will
      * be created instead of updating, and given a new slug with an incrementing number. Will then update caches.
@@ -454,7 +454,7 @@ class SimpleBlog
     }
 
     /**
-     * Delete post
+     * Delete post - @TODO: Write this function
      * Deletes a post, then updates caches as required
      *
      * @since 1.0
@@ -473,7 +473,7 @@ class SimpleBlog
     # -----
 
     /**
-     * Get all categories
+     * Get all categories - @TODO: Write this function
      * Returns an associative array of all categories and data storred in the categories.xml file
      *
      * @since 1.0
@@ -494,7 +494,7 @@ class SimpleBlog
     }
 
     /**
-     * Get individual category
+     * Get individual category - @TODO: Write this function
      * Gets a category with is data and all posts associated with the category
      *
      * @since 1.0
@@ -519,7 +519,7 @@ class SimpleBlog
     }
 
     /**
-     * Save category
+     * Save category - @TODO: Write this function
      * Saves a category and its data to the categories.xml file. If the category already exists, it's data will be
      * updated with the new data. If the $force new parameter is given, a new entry will be created with an incrementing
      * number at the end of the slug instead of updating.
@@ -540,7 +540,7 @@ class SimpleBlog
     }
 
     /**
-     * Delete category
+     * Delete category - @TODO: Write this function
      * Removes a category entry from the categories.xml file, then removes the category from all attached posts
      *
      * @since 1.0
@@ -560,7 +560,7 @@ class SimpleBlog
     # -----
 
     /**
-     * Get all archives
+     * Get all archives - @TODO: Write this function
      * Returns an associative array of archives with its size depending on $basis. A description for the archive will
      * be generated based on the configure SEO Settings.
      *
@@ -587,7 +587,7 @@ class SimpleBlog
     }
 
     /**
-     * Get individual archive
+     * Get individual archive - @TODO: Write this function
      * Returns an array of data of an archive. The size of the archive is determined from its basis which is determined]
      * from the slug given.
      *
@@ -620,7 +620,7 @@ class SimpleBlog
     # -----
 
     /**
-     * Get all tags
+     * Get all tags - @TODO: Write this function
      * Returns an associative array of tags. A description for the tag will be generated based on the configured
      * SEO Settings.
      *
@@ -641,7 +641,7 @@ class SimpleBlog
     }
 
     /**
-     * Get individual tag
+     * Get individual tag - @TODO: Write this function
      * Returns an array of data of a tag, including the posts containing the tag
      *
      * @since 1.0
@@ -670,7 +670,7 @@ class SimpleBlog
     # -----
 
     /**
-     * Generate slug
+     * Generate slug - @TODO: Write this function
      * Generates a URL safe and transliterated slug based on the given string. Characters will be converted as needed.
      *
      * @since 1.0
@@ -684,7 +684,7 @@ class SimpleBlog
     }
 
     /**
-     * Generate excerpt
+     * Generate excerpt - @TODO: Write this function
      * Generates an excerpt of text from the given string of content. Will try to remove all non-text data such as HTML
      * markup. The length of the excerpt can either be specified or will default to what is configured with settings.
      *
@@ -701,7 +701,7 @@ class SimpleBlog
     }
 
     /**
-     * Generate URL
+     * Generate URL - @TODO: Write this function
      * Generates a URL to the blog or to the given section of the blog
      *
      * @since 1.0
@@ -715,12 +715,8 @@ class SimpleBlog
         return '';
     }
 
-    public function getPageTitle(): string { return ''; }
-
-    public function getPageDescription(): string { return ''; }
-
     /**
-     * Search Posts
+     * Search Posts - @TODO: Write this function
      * This is a basic search function. Returns an array of posts filtered by the given keyphrase and filter type.
      *
      * @since 1.0
@@ -734,6 +730,7 @@ class SimpleBlog
         return array();
     }
 
+    // Validate Setting - @TODO: Document this function
     public function validateSetting( string $setting_key, string $setting_value ): bool
     {
         foreach ( $this->default_settings as $setting )
@@ -775,7 +772,6 @@ class SimpleBlog
             }
         }
 
-var_dump('Failed: ' . $setting_key .' = '. $setting_value);
         return false;
     }
 
@@ -785,7 +781,7 @@ var_dump('Failed: ' . $setting_key .' = '. $setting_value);
     # -----
 
     /**
-     * Cache insert
+     * Cache insert - @TODO: Write this function
      * Inserts a string of content into the cache with the given identifier.
      *
      * @since 1.0
@@ -800,7 +796,7 @@ var_dump('Failed: ' . $setting_key .' = '. $setting_value);
     }
 
     /**
-     * Cache Get
+     * Cache Get - @TODO: Write this function
      * Retrieves an item from the cache.
      *
      * @since 1.0
@@ -814,7 +810,7 @@ var_dump('Failed: ' . $setting_key .' = '. $setting_value);
     }
 
     /**
-     * Rebuild cache
+     * Rebuild cache - @TODO: Write this function
      * Loops over all posts and recreates all caches. Will also check posts against the categories.xml file ensuring
      * that all posts are attached to a category that actually exists, otherwise removes the category from the post.
      *

@@ -14,7 +14,7 @@ if ( defined('IN_GS') === false ) { die( 'You cannot load this file directly!' )
 class SimpleBlog_FrontEnd extends SimpleBlog
 {
     /**
-     * Show a post
+     * Show a post - @TODO: Write this function
      * Generates the HTML content to show an individual post
      *
      * @since 1.0
@@ -25,7 +25,7 @@ class SimpleBlog_FrontEnd extends SimpleBlog
     public function showPost( string $post, array $args = [] ): string { return ''; }
 
     /**
-     * Show a group of posts
+     * Show a group of posts - @TODO: Write this function
      * Generates the HTML content to show a group list of posts
      *
      * @since 1.0
@@ -44,7 +44,7 @@ class SimpleBlog_FrontEnd extends SimpleBlog
     }
 
     /**
-     * Show unordered list
+     * Show unordered list - @TODO: Write this function
      * Generated a HTML unordered list of a group of items. Only the <li>'s are provided, template will need provede
      * the <ul> or <ol> to add this to.
      *
@@ -58,5 +58,11 @@ class SimpleBlog_FrontEnd extends SimpleBlog
         // Generate an unordered list of items
         return '';
     }
+
+    // Get page title - @TODO: Write/Document this function
+    public function getPageTitle(): string { return ''; }
+
+    // Get page description - @TODO: Write/Document this function
+    public function getPageDescription(): string { return ''; }
 
 }
