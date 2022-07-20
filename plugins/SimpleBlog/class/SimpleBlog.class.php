@@ -316,10 +316,13 @@ class SimpleBlog
     function restoreSettings(): bool
     {
         // Move current to temp file
-        if ( copy($this->data_files['settings'], $this->data_paths['backups'] . 'settings.tmp.xml') === false )
+        if ( file_exists($this->data_files['settings']) )
         {
-            SimpleBlog_debugLog( __METHOD__, "Couldn't restore settings from backup - copy[cur,tmp] (false)", 'error' );
-            return false;
+            if ( copy($this->data_files['settings'], $this->data_paths['backups'] . 'settings.tmp.xml') === false )
+            {
+                SimpleBlog_debugLog( __METHOD__, "Couldn't restore settings from backup - copy[cur,tmp] (false)", 'error' );
+                return false;
+            }
         }
 
         // Move backup to current
@@ -330,9 +333,37 @@ class SimpleBlog
         }
 
         // Move temp file to backup
-        if ( copy($this->data_paths['backups'] . 'settings.tmp.xml', $this->data_paths['backups'] . 'settings.bak.xml') === false )
+        if ( file_exists($this->data_paths['backups'] . 'settings.tmp.xml') )
         {
-            SimpleBlog_debugLog( __METHOD__, "Couldn't restore settings from backup - copy[tmp,bak] (false)", 'error' );
+            if ( copy($this->data_paths['backups'] . 'settings.tmp.xml', $this->data_paths['backups'] . 'settings.bak.xml') === false )
+            {
+                SimpleBlog_debugLog( __METHOD__, "Couldn't restore settings from backup - copy[tmp,bak] (false)", 'error' );
+                return false;
+            }
+            // Remove the temp file
+            if ( unlink($this->data_paths['backups'] . 'settings.tmp.xml' === false )
+            {
+                SimpleBlog_debugLog( __METHOD__, "Restored settings from backup, but temp file not removed - unlink (false)", 'warn' );
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Reset settings to defaults
+     * Resets settings configuration back to the default state by removing the current settings configuration file. When
+     * the class is next instantiated, a default settings configuration file will be created.
+     *
+     * @since 1.0
+     * @return bool True if restored successfully, False otherwise
+     */
+    function restoreSettings(): bool
+    {
+        // Delete the current setting file
+        if ( unlink($this->data_paths['backups'] . 'settings.tmp.xml' === false )
+        {
+            SimpleBlog_debugLog( __METHOD__, "Failed to reset settings to default - unlink (false)", 'error' );
             return false;
         }
 

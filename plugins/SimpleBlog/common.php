@@ -140,6 +140,19 @@ function SimpleBlog_main(): void
                 require_once( SBLOGPATH . 'includes/html/blog-settings.inc.php' );
                 break;
 
+            case 'reset-default':
+                if ( $SimpleBlog->restoreSettings() )
+                {
+                    $undolink = '<a href="load.php?id=' . SBLOG . '&settings=restore">' . i18n_r('UNDO') . '</a>';
+                    SimpleBlog_displayMessage( i18n_r(SBLOG . '/UI_SETTINGS_RESET_OK') . " - " . $undolink, 'success', true );
+                }
+                else
+                {
+                    SimpleBlog_displayMessage( i18n_r(SBLOG . '/UI_SETTINGS_RESET_FAILED'), 'error', false );
+                }
+                require_once( SBLOGPATH . 'includes/html/blog-settings.inc.php' );
+                break;
+
             case 'cancel':
                 SimpleBlog_displayMessage( i18n_r(SBLOG . '/UI_SAVE_SETTINGS_CANCELED'), 'warn' );
                 require_once( SBLOGPATH . 'includes/html/blog-settings.inc.php' );
