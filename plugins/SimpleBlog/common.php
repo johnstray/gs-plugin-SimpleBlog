@@ -118,11 +118,24 @@ function SimpleBlog_main(): void
                 }
                 if ( $SimpleBlog->saveSettings($_POST) )
                 {
-                    SimpleBlog_displayMessage( "Settings saved", 'info', true );
+                    $undolink = '<a href="load.php?id=' . SBLOG . '&settings=restore">' . i18n_r('UNDO') . '</a>';
+                    SimpleBlog_displayMessage( i18n_r(SBLOG . '/UI_SETTINGS_SAVED_MSG') . " - " . $undolink, 'success', true );
                 }
                 else
                 {
-                    SimpleBlog_displayMessage( "Settings not saved", 'error' );
+                    SimpleBlog_displayMessage( i18n_r(SBLOG . '/UI_SETTINGS_NOT_SAVED_MSG'), 'error', false );
+                }
+                require_once( SBLOGPATH . 'includes/html/blog-settings.inc.php' );
+                break;
+
+            case 'restore':
+                if ( $SimpleBlog->restoreSettings() )
+                {
+                    SimpleBlog_displayMessage( i18n_r(SBLOG . '/UI_SETTINGS_BACKUP_RESTORED'), 'success', true );
+                }
+                else
+                {
+                    SimpleBlog_displayMessage( i18n_r(SBLOG . '/UI_CANT_RESTORE_SETTINGS_BACKUP'), 'error', false );
                 }
                 require_once( SBLOGPATH . 'includes/html/blog-settings.inc.php' );
                 break;

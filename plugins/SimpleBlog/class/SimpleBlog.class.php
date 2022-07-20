@@ -45,7 +45,8 @@ class SimpleBlog
     public $data_paths = array(
         'basedata' => GSDATAPATH . 'blog' . DIRECTORY_SEPARATOR,
         'posts' => SBLOGDATA . 'posts' . DIRECTORY_SEPARATOR,
-        'cache' => GSCACHEPATH . SBLOG . DIRECTORY_SEPARATOR
+        'cache' => GSCACHEPATH . SBLOG . DIRECTORY_SEPARATOR,
+        'backups' => GSBACKUPSPATH . SBLOG . DIRECTORY_SEPARATOR
     );
 
     /** @var array $data_files Array of paths to required files. */
@@ -292,6 +293,46 @@ class SimpleBlog
         {
             # Saving settings to file failed, spit-out some debugging info
             SimpleBlog_debugLog( __METHOD__, "Couldn't save settings to file - XMLsave (false)", 'error' );
+            return false;
+        }
+
+        # Make a backup of the settings file
+        if ( copy($this->data_files['settings'], $this->data_paths['backups'] . 'settings.bak.xml') === false )
+        {
+            SimpleBlog_displayMessage( i18n_r(SBLOG . '/UI_CANT_CREATE_SETTINGS_BACKUP') . $data_path, 'warn', false );
+            SimpleBlog_debugLog( __METHOD__, "Couldn't create backup of settings - copy[cur,bak] (false)", 'warn' );
+        }
+
+        return true;
+    }
+
+    /**
+     * Restore settings
+     * Restores settings configuration to its previous state using the last backup that was saved.
+     *
+     * @since 1.0
+     * @return bool True if restored successfully, False otherwise
+     */
+    function restoreSettings(): bool
+    {
+        // Move current to temp file
+        if ( copy($this->data_files['settings'], $this->data_paths['backups'] . 'settings.tmp.xml') === false )
+        {
+            SimpleBlog_debugLog( __METHOD__, "Couldn't restore settings from backup - copy[cur,tmp] (false)", 'error' );
+            return false;
+        }
+
+        // Move backup to current
+        if ( copy($this->data_paths['backups'] . 'settings.bak.xml', $this->data_files['settings']) === false )
+        {
+            SimpleBlog_debugLog( __METHOD__, "Couldn't restore settings from backup - copy[bak,cur] (false)", 'error' );
+            return false;
+        }
+
+        // Move temp file to backup
+        if ( copy($this->data_paths['backups'] . 'settings.tmp.xml', $this->data_paths['backups'] . 'settings.bak.xml') === false )
+        {
+            SimpleBlog_debugLog( __METHOD__, "Couldn't restore settings from backup - copy[tmp,bak] (false)", 'error' );
             return false;
         }
 

@@ -87,6 +87,12 @@ $i18n = array(
     'UI_SEO_SEARCH_HINT' => "{keyphrase} = The search term, {filter} = The filter used",
     'UI_SEO_SHOW_ON_PAGE' => "Show on page?",
 
+    'UI_SETTINGS_SAVED_MSG' => "Configuration settings successfully saved!",
+    'UI_SETTINGS_NOT_SAVED_MSG' => "Failed to save configuration settings!",
+    'UI_CANT_CREATE_SETTINGS_BACKUP' => "Could not create a backup of settings. Make sure your <code>/backups</code> directory is writeable.",
+    'UI_CANT_RESTORE_SETTINGS_BACKUP' => "Could not restore configuration settings from backup!",
+    'UI_SETTINGS_BACKUP_RESTORED' => "Successfully restored configuration settings from backup!",
+
 
     # -----
     # Post Management UI
