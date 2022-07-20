@@ -102,7 +102,11 @@ class SimpleBlog
                     if ( defined('GSCHMOD') )
                     {
                         /** @TODO: Handle this as error if it returns false */
-                        @chmod( $data_path, defined('GSCHMOD') ? GSCHMOD : 0755 );
+                        if ( @chmod( $data_path, $chmod_perm = (defined('GSCHMOD') ? GSCHMOD : 0755) ) === false )
+                        {
+                            SimpleBlog_displayMessage( i18n_r(SBLOG . '/CANT_SET_DIRECTORY_PERMS') . $data_path, 'error', false );
+                            SimpleBlog_debugLog( __METHOD__, "Could not set permissions on required directory - chmod[" . $chmod_perm . "] (false): " . $data_path, 'error' );
+                        }
                     }
                 }
             }
