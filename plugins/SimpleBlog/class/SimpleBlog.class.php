@@ -356,9 +356,9 @@ class SimpleBlog
      * the class is next instantiated, a default settings configuration file will be created.
      *
      * @since 1.0
-     * @return bool True if restored successfully, False otherwise
+     * @return bool True if reset successfully, False otherwise
      */
-    function restoreSettings(): bool
+    function resetSettings(): bool
     {
         // Delete the current setting file
         if ( unlink($this->data_paths['backups'] . 'settings.tmp.xml' === false )

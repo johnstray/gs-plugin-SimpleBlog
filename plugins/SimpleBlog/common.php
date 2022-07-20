@@ -141,7 +141,7 @@ function SimpleBlog_main(): void
                 break;
 
             case 'reset-default':
-                if ( $SimpleBlog->restoreSettings() )
+                if ( $SimpleBlog->resetSettings() )
                 {
                     $undolink = '<a href="load.php?id=' . SBLOG . '&settings=restore">' . i18n_r('UNDO') . '</a>';
                     SimpleBlog_displayMessage( i18n_r(SBLOG . '/UI_SETTINGS_RESET_OK') . " - " . $undolink, 'success', true );
