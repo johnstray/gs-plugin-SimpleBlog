@@ -101,7 +101,6 @@ class SimpleBlog
                 {
                     if ( defined('GSCHMOD') )
                     {
-                        /** @TODO: Handle this as error if it returns false */
                         if ( @chmod( $data_path, $chmod_perm = (defined('GSCHMOD') ? GSCHMOD : 0755) ) === false )
                         {
                             SimpleBlog_displayMessage( i18n_r(SBLOG . '/CANT_SET_DIRECTORY_PERMS') . $data_path, 'error', false );
