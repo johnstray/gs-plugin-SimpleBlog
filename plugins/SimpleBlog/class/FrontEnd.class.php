@@ -59,15 +59,51 @@ class SimpleBlog_FrontEnd extends SimpleBlog
         return '';
     }
 
-    // Get page title - @TODO: Write/Document this function
-    public function getPageTitle(): string { return ''; }
+    /**
+     * Get page title - @TODO: Write this function
+     * Generates a title for the current blog page - used for page metadata
+     *
+     * @since 1.0
+     * @param string $type - The type of title to show
+     * @param string $slug - A slug for the current page related to the $type. When $type is set to results, $slug
+     *                       needs to given as a 2 part string in the format of 'filter-keyphrase'
+     * @return string The generated string of title text
+     */
+    // @TODO: Sanitise the $slug variable as $_GET data could be passed to it and flow to the page output
+    //        creating a vector for a code injection attack.
+    public function getPageTitle( string $type = 'post', string $slug = '' ): string { return ''; }
 
-    // Get page title long - @TODO: Write/Document this function
-    public function getPageTitleLong(): string { return ''; }
+    /**
+     * Get page long title - @TODO: Write this function
+     * Generates a title for the current blog page - used for page metadata
+     *
+     * @since 1.0
+     * @param string $type - The type of title to show
+     * @param string $slug - A slug for the current page related to the $type. When $type is set to results, $slug
+     *                       needs to given as a 2 part string in the format of 'filter-keyphrase'
+     * @return string The generated string of long title text
+     */
+    // @TODO: Sanitise the $slug variable as $_GET data could be passed to it and flow to the page output
+    //        creating a vector for a code injection attack.
+    public function getPageTitleLong( string $type = 'post', string $slug = '' ): string { return ''; }
 
-    // Get page description - @TODO: Write/Document this function
+    /**
+     * Get page description
+     * Generates a description of the current blog page - used for page metadata
+     *
+     * @since 1.0
+     * @param string $type - The type of description to show
+     * @param string $slug - A slug for the current page related to the $type. When $type is set to results, $slug
+     *                       needs to given as a 2 part string in the format of 'filter-keyphrase'
+     * @return string The generated string of description text
+     */
     public function getPageDescription( string $type = 'post', string $slug = '', bool $force = false ): string
     {
+        // @TODO: Sanitise the $slug variable as $_GET data could be passed to it and flow to the page output
+        //        creating a vector for a code injection attack.
+
+        if ( empty($slug) ) { return ''; } // If empty slug, return empty description
+
         switch ( $type ) {
             case 'post':
                 // Get data of the post
