@@ -48,9 +48,8 @@ function SimpleBlog_init(): void
     add_action( 'blog-sidebar', 'createSideMenu', [SBLOG, i18n_r(SBLOG . '/UI_SIDEBAR_HELP'), 'help'] );
 
     # Hooks and Filters
-    add_action( 'index-pretemplate', 'SimpleBlog_setPageTitle' );       // Set page title
-    add_action( 'index-pretemplate', 'SimpleBlog_setPageDescription' ); // Sets the page Meta Description
     add_action( 'theme-header', 'SimpleBlog_rssFeedLink' );             // Add RSS link to site header
+    add_filter( 'data_index', 'SimpleBlog_pageDataFilter');             // Replaces the page metadata with blog metadata
     add_filter( 'content', 'SimpleBlog_pageContentFilter' );            // Replaces the page content with blog content
 
     # Register / Queue Stylesheets
@@ -211,47 +210,71 @@ function SimpleBlog_main(): void
 }
 
 /**
- * Set page title
- * Sets the title of the current page to the title of the current Blog page if one is showing. Will return unmodified
- * if the current page is not a Blog page.
- *
- * @since 1.0
- * @return string The (un)modified page title to show
- */
-function SimpleBlog_setPageTitle(): string
-{
-    GLOBAL $title;
-    $SimpleBlog = new SimpleBlog();
-    $blogTitle = $SimpleBlog->getPageTitle();
-
-    if ( empty($blogTitle) === false )
-    {
-        $title = $blogTitle;
-    }
-
-    return $title;
-}
-
-/**
- * Set page description
- * Sets the meta description of the current page to the description of the current Blog page if one is showing. Will
+ * Set page metadata
+ * Sets the metadata of the current page to the metadata of the current Blog page if one is showing. Will
  * return unmodified if the current page is not a Blog page.
  *
  * @since 1.0
- * @return string The (un)modified page description to show
+ * @param SimpleXMLExtended $metadata - The data_index object to possibly modify
+ * @return SimpleXMLExtended The (un)modified page description to show
  */
-function SimpleBlog_setPageDescription(): string
+function SimpleBlog_pageDataFilter( SimpleXMLExtended $metadata ): SimpleXMLExtended
 {
-    GLOBAL $metad;
-    $SimpleBlog = new SimpleBlog();
-    $blogDescription = $SimpleBlog->getPageDescription();
+    $SimpleBlog = new SimpleBlog_FrontEnd();
 
-    if ( empty($blogDescription) === false )
+    // Check that we are on a blog page
+    if ( (string) $metadata->url == $SimpleBlog->getSetting('displaypage') )
     {
-        $metad = $blogDescription;
+        // Page Title
+        if ( isset($metadata->title) && empty($SimpleBlog->getPageTitle()) === false )
+        {
+            $metadata->title = $SimpleBlog->getPageTitle();
+        }
+
+        // Page Title Long - GS 3.4+
+        if ( isset($metadata->titlelong) && empty($SimpleBlog->getPageTitleLong()) === false )
+        {
+            $metadata->titlelong = $SimpleBlog->getPageTitleLong();
+        }
+
+        // Page Summary - GS 3.4+
+        if ( isset($metadata->summary) && empty($SimpleBlog->getPageDescription()) === false )
+        {
+            $metadata->summary = $SimpleBlog->getPageDescription();;
+        }
+
+        // Page Meta Description
+        if ( isset($metadata->metad) && empty($SimpleBlog->getPageDescription()) === false )
+        {
+            $metadata->metad = $SimpleBlog->generateExcerpt( $SimpleBlog->getPageDescription(), 255 );
+        }
+
+        // The following only applies if we are showing a post
+        if ( isset($_GET['post']) )
+        {
+            $current_post = $SimpleBlog->getPost($_GET['post']);
+
+            // Page publication date
+            if ( isset($metadata->pubDate) && empty($current_post['date']) === false )
+            {
+                $metadata->pubDate = date( i18n_r('DATE_AND_TIME_FORMAT'), strtotime($current_post['date']) );
+            }
+
+            // Page Author
+            if ( isset($metadata->author) && empty($current_post['author']) === false )
+            {
+                $metadata->author = $current_post['author'];
+            }
+
+            // Page Meta Tags
+            if ( isset($metadata->meta) && empty($current_post['tags']) === false )
+            {
+                $metadata->meta = $current_post['tags'];
+            }
+        }
     }
 
-    return $metad;
+    return $metadata;
 }
 
 /**
