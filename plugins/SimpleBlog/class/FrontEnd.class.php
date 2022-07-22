@@ -62,7 +62,80 @@ class SimpleBlog_FrontEnd extends SimpleBlog
     // Get page title - @TODO: Write/Document this function
     public function getPageTitle(): string { return ''; }
 
+    // Get page title long - @TODO: Write/Document this function
+    public function getPageTitleLong(): string { return ''; }
+
     // Get page description - @TODO: Write/Document this function
-    public function getPageDescription(): string { return ''; }
+    public function getPageDescription( string $type = 'post', string $slug = '', bool $force = false ): string
+    {
+        switch ( $type ) {
+            case 'post':
+                // Get data of the post
+                $post = $this->getPost($slug);
+
+                // Return an excerpt of its content
+                return $this->generateExcerpt( $post['content'] );
+                break;
+
+            case 'category':
+                // Check if enabled in settings or forced
+                if ( $this->getSetting('categoriesdescshow') == 'yes' || $force === true )
+                {
+                    // Get description from settings and Category Name from file
+                    $description = $this->getSetting('categoriesdesc');
+                    $category = $this->getCategory($slug);
+
+                    // Replace {category} with the actual category title
+                    return preg_replace( '{category}', $category['title'], $description );
+                }
+                break;
+
+            case 'archive':
+                // Check if enabled in settings or forced
+                if ( $this->getSetting('archivesdescshow') == 'yes' || $force === true )
+                {
+                    // Get description from settings and Archive Name from file
+                    $description = $this->getSetting('archivesdesc');
+                    $archive = $this->getArchive($slug);
+
+                    // Replace {archive} with the actual archive title
+                    return preg_replace( '{archive}', $archive['title'], $description );
+                }
+                break;
+
+            case 'tag':
+                // Check if enabled in settings or forced
+                if ( $this->getSetting('tagsdescshow') == 'yes' || $force === true )
+                {
+                    // Get description from settings
+                    $description = $this->getSetting('tagsdesc');
+
+                    // Replace {tag} with the actual tag
+                    return preg_replace( '{category}', $slug, $description );
+                }
+                break;
+
+            case 'results':
+                // Check if enabled in settings or forced
+                if ( $this->getSetting('searchdescshow') == 'yes' || $force === true )
+                {
+                    // Get description from settings and Category Name from file
+                    $description = $this->getSetting('searchdesc');
+                    $slug = explode('-', $slug);
+
+                    // Replace {filter} with the filter extracted from slug
+                    $description = preg_replace( '{filter}', $slug[0], $description );
+                    $description = preg_replace( '{keyphrase}', $slug[1], $description );
+                    return $description;
+                }
+                break;
+
+            default: // Default is to return an empty string
+                return '';
+        }
+    }
+
+    // Get RSS Feed Link - @TODO: Write/Document this function
+    public function getRssFeedLink(): string { return ''; }
 
 }
