@@ -86,7 +86,7 @@ class SimpleBlog_FrontEnd extends SimpleBlog
                     $category = $this->getCategory($slug);
 
                     // Replace {category} with the actual category title
-                    return preg_replace( '{category}', $category['title'], $description );
+                    return str_replace( '{category}', $category['title'], $description );
                 }
                 break;
 
@@ -99,7 +99,7 @@ class SimpleBlog_FrontEnd extends SimpleBlog
                     $archive = $this->getArchive($slug);
 
                     // Replace {archive} with the actual archive title
-                    return preg_replace( '{archive}', $archive['title'], $description );
+                    return str_replace( '{archive}', $archive['title'], $description );
                 }
                 break;
 
@@ -111,7 +111,7 @@ class SimpleBlog_FrontEnd extends SimpleBlog
                     $description = $this->getSetting('tagsdesc');
 
                     // Replace {tag} with the actual tag
-                    return preg_replace( '{category}', $slug, $description );
+                    return str_replace( '{category}', $slug, $description );
                 }
                 break;
 
@@ -124,8 +124,8 @@ class SimpleBlog_FrontEnd extends SimpleBlog
                     $slug = explode('-', $slug);
 
                     // Replace {filter} with the filter extracted from slug
-                    $description = preg_replace( '{filter}', $slug[0], $description );
-                    $description = preg_replace( '{keyphrase}', $slug[1], $description );
+                    $description = str_replace( '{filter}', $slug[0], $description );
+                    $description = str_replace( '{keyphrase}', $slug[1], $description );
                     return $description;
                 }
                 break;
