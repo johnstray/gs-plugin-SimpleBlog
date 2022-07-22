@@ -92,8 +92,8 @@ $i18n = array(
     'UI_CANT_CREATE_SETTINGS_BACKUP' => "Could not create a backup of settings. Make sure your <code>/backups</code> directory is writeable.",
     'UI_CANT_RESTORE_SETTINGS_BACKUP' => "Could not restore configuration settings from backup!",
     'UI_SETTINGS_BACKUP_RESTORED' => "Successfully restored configuration settings from backup!",
-    'UI_SETTINGS_RESET_OK' = "Successfully reset configuration settings back to their defaults.",
-    'UI_SETTINGS_RESET_FAILED' = "Faild to reset configuration settings back to their defaults!",
+    'UI_SETTINGS_RESET_OK' => "Successfully reset configuration settings back to their defaults.",
+    'UI_SETTINGS_RESET_FAILED' => "Faild to reset configuration settings back to their defaults!",
 
 
     # -----

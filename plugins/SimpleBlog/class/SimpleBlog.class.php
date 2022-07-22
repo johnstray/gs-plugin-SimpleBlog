@@ -344,7 +344,7 @@ class SimpleBlog
                 return false;
             }
             // Remove the temp file
-            if ( unlink($this->data_paths['backups'] . 'settings.tmp.xml' === false )
+            if ( unlink($this->data_paths['backups'] . 'settings.tmp.xml') === false )
             {
                 SimpleBlog_debugLog( __METHOD__, "Restored settings from backup, but temp file not removed - unlink (false)", 'warn' );
             }
@@ -364,7 +364,7 @@ class SimpleBlog
     function resetSettings(): bool
     {
         // Delete the current setting file
-        if ( unlink($this->data_paths['backups'] . 'settings.tmp.xml' === false )
+        if ( unlink($this->data_paths['backups'] . 'settings.tmp.xml') === false )
         {
             SimpleBlog_debugLog( __METHOD__, "Failed to reset settings to default - unlink (false)", 'error' );
             return false;
