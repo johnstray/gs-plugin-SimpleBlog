@@ -226,27 +226,123 @@ function SimpleBlog_pageDataFilter( SimpleXMLExtended $metadata ): SimpleXMLExte
     if ( (string) $metadata->url == $SimpleBlog->getSetting('displaypage') )
     {
         // Page Title
-        if ( isset($metadata->title) && empty($SimpleBlog->getPageTitle()) === false )
+        if ( isset($metadata->title) )
         {
-            $metadata->title = $SimpleBlog->getPageTitle();
+            switch ( true )
+            {
+                case isset($_GET['post']):
+                    $metadata->summary = $SimpleBlog->getPageTitle('post', $_GET['post']);
+                    break;
+
+                case isset($_GET['category']):
+                    $metadata->summary = $SimpleBlog->getPageTitle('category', $_GET['category']);
+                    break;
+
+                case isset($_GET['archive']):
+                    $metadata->summary = $SimpleBlog->getPageTitle('archive', $_GET['archive']);
+                    break;
+
+                case isset($_GET['tag']):
+                    $metadata->summary = $SimpleBlog->getPageTitle('tag', $_GET['tag']);
+                    break;
+
+                case isset($_GET['filter']) && isset($_GET['keyphrase']):
+                    $metadata->summary = $SimpleBlog->getPageTitle('results', $_GET['filter'] . '-' . $_GET['keyphrase']);
+                    break;
+
+                default:
+                    // Do nothing! There are no other page types we can handle
+            }
         }
 
         // Page Title Long - GS 3.4+
-        if ( isset($metadata->titlelong) && empty($SimpleBlog->getPageTitleLong()) === false )
+        if ( isset($metadata->titlelong) )
         {
-            $metadata->titlelong = $SimpleBlog->getPageTitleLong();
+            switch ( true )
+            {
+                case isset($_GET['post']):
+                    $metadata->summary = $SimpleBlog->getPageTitleLong('post', $_GET['post']);
+                    break;
+
+                case isset($_GET['category']):
+                    $metadata->summary = $SimpleBlog->getPageTitleLong('category', $_GET['category']);
+                    break;
+
+                case isset($_GET['archive']):
+                    $metadata->summary = $SimpleBlog->getPageTitleLong('archive', $_GET['archive']);
+                    break;
+
+                case isset($_GET['tag']):
+                    $metadata->summary = $SimpleBlog->getPageTitleLong('tag', $_GET['tag']);
+                    break;
+
+                case isset($_GET['filter']) && isset($_GET['keyphrase']):
+                    $metadata->summary = $SimpleBlog->getPageTitleLong('results', $_GET['filter'] . '-' . $_GET['keyphrase']);
+                    break;
+
+                default:
+                    // Do nothing! There are no other page types we can handle
+            }
         }
 
         // Page Summary - GS 3.4+
-        if ( isset($metadata->summary) && empty($SimpleBlog->getPageDescription()) === false )
+        if ( isset($metadata->summary) )
         {
-            $metadata->summary = $SimpleBlog->getPageDescription();;
+            switch ( true )
+            {
+                case isset($_GET['post']):
+                    $metadata->summary = $SimpleBlog->getPageDescription('post', $_GET['post']);
+                    break;
+
+                case isset($_GET['category']):
+                    $metadata->summary = $SimpleBlog->getPageDescription('category', $_GET['category']);
+                    break;
+
+                case isset($_GET['archive']):
+                    $metadata->summary = $SimpleBlog->getPageDescription('archive', $_GET['archive']);
+                    break;
+
+                case isset($_GET['tag']):
+                    $metadata->summary = $SimpleBlog->getPageDescription('tag', $_GET['tag']);
+                    break;
+
+                case isset($_GET['filter']) && isset($_GET['keyphrase']):
+                    $metadata->summary = $SimpleBlog->getPageDescription('results', $_GET['filter'] . '-' . $_GET['keyphrase']);
+                    break;
+
+                default:
+                    // Do nothing! There are no other page types we can handle
+            }
         }
 
         // Page Meta Description
-        if ( isset($metadata->metad) && empty($SimpleBlog->getPageDescription()) === false )
+        if ( isset($metadata->metad) )
         {
-            $metadata->metad = $SimpleBlog->generateExcerpt( $SimpleBlog->getPageDescription(), 255 );
+            switch ( true )
+            {
+                case isset($_GET['post']):
+                    $metadata->metad = $SimpleBlog->generateExcerpt($SimpleBlog->getPageDescription('post', $_GET['post']), 255);
+                    break;
+
+                case isset($_GET['category']):
+                    $metadata->metad = $SimpleBlog->generateExcerpt($SimpleBlog->getPageDescription('category', $_GET['category']), 255);
+                    break;
+
+                case isset($_GET['archive']):
+                    $metadata->metad = $SimpleBlog->generateExcerpt($SimpleBlog->getPageDescription('archive', $_GET['archive']), 255);
+                    break;
+
+                case isset($_GET['tag']):
+                    $metadata->metad = $SimpleBlog->generateExcerpt($SimpleBlog->getPageDescription('tag', $_GET['tag']), 255);
+                    break;
+
+                case isset($_GET['filter']) && isset($_GET['keyphrase']):
+                    $metadata->metad = $SimpleBlog->generateExcerpt($SimpleBlog->getPageDescription('results', $_GET['filter'] . '-' . $_GET['keyphrase']), 255);
+                    break;
+
+                default:
+                    // Do nothing! There are no other page types we can handle
+            }
         }
 
         // The following only applies if we are showing a post
