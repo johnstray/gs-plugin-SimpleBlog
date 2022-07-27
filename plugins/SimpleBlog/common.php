@@ -57,12 +57,10 @@ function SimpleBlog_init(): void
     queue_style( SBLOG . '_css', GSBACK );
 
     # Register / Queue Scripts
-    register_script( 'table_paging', $SITEURL . 'plugins/' . SBLOG . '/includes/scripts/paging.js', '1.0', false);
+    register_script( 'listjs', $SITEURL . 'plugins/' . SBLOG . '/includes/scripts/list.min.js', '1.5.0', false);
     register_script( 'image_upload', $SITEURL . 'plugins/' . SBLOG . '/includes/scripts/image_upload.js', '1.0.0', true);
-    register_script( 'stupidTable', $SITEURL . 'plugins/' . SBLOG . '/includes/scripts/stupidTable.js', '1.0.2', false);
-    queue_script('table_paging', GSBACK);
+    queue_script('listjs', GSBACK);
     queue_script('image_upload', GSBACK);
-    queue_script('stupidTable', GSBACK);
 
     # Load in all the classes
     # - Ensuring the core SimpleBlog class is loaded before any others
@@ -384,18 +382,11 @@ function SimpleBlog_pageDataFilter( SimpleXMLExtended $metadata ): SimpleXMLExte
  */
 function SimpleBlog_rssFeedLink( bool $echo = true ): string
 {
-    // @TODO: Write this function to generate the link url and title
-    $rss_feed_title = get_site_name(false) . i18n_r(SBLOG . '/RSS_FEED') . ': Rss Feed Title';
-    $rss_feed_link = '';
+    $SimpleBlog = new SimpleBlog_FrontEnd();
+    $rss_link = $SimpleBlog->getRssFeedLink();
 
-    if ( $echo )
-    {
-        echo '<link rel="alternate" type="application/rss+xml" ' .
-             'title="' . $rss_feed_title . '" ' .
-             'href="' . $rss_feed_link . '" />';
-    }
-
-    return $rss_feed_link;
+    if ( $echo ) { echo $rss_link; }
+    return $rss_link;
 }
 
 /**
