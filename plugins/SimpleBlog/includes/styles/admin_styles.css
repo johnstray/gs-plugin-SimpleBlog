@@ -153,6 +153,164 @@
     border-radius: 2px;
 }
 
+/* Category Management Page */
+#metadata_toggle {
+    margin-top: 0;
+}
+.gs_simpleblog_ui_new-category {
+    padding: 10px 15px;
+    display: none;
+}
+.gs_simpleblog_ui_new-category p {
+    border-bottom: 1px dotted #ccc;
+    margin-bottom: 10px;
+    font-size: 11px;
+    line-height: 12px;
+}
+.gs_simpleblog_ui_new-category .input-group {
+    display: flex;
+}
+.gs_simpleblog_ui_new-category .input-group label {
+    width: 30%;
+    height: 24px;
+    line-height: 24px;
+}
+.gs_simpleblog_ui_new-category .largeform fieldset {
+    padding: 10px 15px;
+    margin: 0;
+    border: none;
+}
+.gs_simpleblog_ui_new-category .largeform textarea {
+    height: 50px;
+}
+.gs_simpleblog_ui_new-category .largeform input.submit {
+    display: block;
+    margin: 0 auto;
+    height: 24px;
+    padding: 5px 10px;
+}
+#gs_simpleblog_ui_categories_table td.secondarylink {
+    text-align: center;
+    vertical-align: middle;
+}
+#gs_simpleblog_ui_categories_table td.delete {
+    text-align: center;
+    vertical-align: middle;
+    padding-right: 10px;
+}
+#gs_simpleblog_ui_categories_table td.delete > a,
+#gs_simpleblog_ui_categories_table td.secondarylink > a {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    display: block;
+    margin: 0 auto;
+}
+#gs_simpleblog_ui_categories_table td.delete > a svg,
+#gs_simpleblog_ui_categories_table td.secondarylink > a svg {
+    width: 16px;
+    margin-top: 3px;
+}
+#gs_simpleblog_ui_categories_table td.name {
+    padding-left: 10px;
+    color: #333;
+}
+#gs_simpleblog_ui_categories_table td.name a:before {
+    content: '[ ';
+}
+#gs_simpleblog_ui_categories_table td.name a:after {
+    content: ' ]';
+}
+#gs_simpleblog_ui_categories_table td.name p {
+    margin-bottom: 3px;
+    line-height: 10px;
+    color: #777;
+    max-width: 500px;
+    font-size: 10px;
+}
+#gs_simpleblog_ui_categories_table tr.editcat {
+    background-color: #ffffd5 !important;
+}
+#gs_simpleblog_ui_categories_table tr.editcat td.editname {
+    padding: 10px;
+}
+#gs_simpleblog_ui_categories_table td.editname input {
+    font-size: 10px;
+    border: none;
+    border-bottom: 1px solid #cfcfcf;
+}
+#gs_simpleblog_ui_categories_table td.editname textarea {
+    height: 30px;
+    line-height: 10px;
+    font-size: 9px;
+    border: none;
+    border-bottom: 1px solid #cfcfcf;
+    color: #777;
+}
+.gs_simpleblog_ui_sort-button {
+    display:inline-block;
+    width: 14px; height: 14px;
+    padding:2px 4px;
+    border: 1px solid #333;
+    border-radius: 3px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+.gs_simpleblog_ui_sort-button:after {
+    display: block;
+    width: 14px;
+    height: 14px;
+    background-color: currentColor;
+    content: '';
+    mask-repeat: no-repeat;
+    mask-position: center center;
+    mask-size: contain;
+}
+.gs_simpleblog_ui_sort-button:hover {
+    background-color: #182227;
+    cursor: pointer;
+}
+.gs_simpleblog_ui_sort-button:hover:after {
+    color: #afc5cf;
+}
+.gs_simpleblog_ui_sort-button.sort-az[data-order=asc]:after {
+    mask-image: url('/jDesign34.test/plugins/SimpleBlog/includes/images/arrow-down-a-z-solid.svg');
+}
+.gs_simpleblog_ui_sort-button.sort-az[data-order=desc]:after {
+    mask-image: url('/jDesign34.test/plugins/SimpleBlog/includes/images/arrow-down-z-a-solid.svg');
+}
+.gs_simpleblog_ui_sort-button.sort-19[data-order=asc]:after {
+    mask-image: url('/jDesign34.test/plugins/SimpleBlog/includes/images/arrow-down-1-9-solid.svg');
+}
+.gs_simpleblog_ui_sort-button.sort-19[data-order=desc]:after {
+    mask-image: url('/jDesign34.test/plugins/SimpleBlog/includes/images/arrow-down-9-1-solid.svg');
+}
+#gs_simpleblog_ui_categories_table .pagination {
+    margin: 0 !important;
+    text-align: center;
+}
+#gs_simpleblog_ui_categories_table .pagination li {
+    list-style: none;
+    display: inline-block;
+}
+#gs_simpleblog_ui_categories_table .pagination li a {
+    display: block;
+    margin: 0 3px 0;
+    width: 14px;
+    height: 14px;
+    padding: 2px 2px;
+    border: 1px solid #333;
+    border-radius: 3px;
+    text-align: center;
+}
+#gs_simpleblog_ui_categories_table .pagination li a:hover,
+#gs_simpleblog_ui_categories_table .pagination li.active a:hover {
+    background-color: #afc5cf;
+}
+#gs_simpleblog_ui_categories_table .pagination li.active a {
+    background-color: #f7f7f7;
+}
+
 /* Copyright Text Section */
 .gs_simpleblog_ui_copyright-text {
   text-shadow: 1px 1px 0 rgba(255,255,255,.4);
